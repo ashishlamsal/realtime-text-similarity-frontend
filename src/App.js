@@ -1,9 +1,11 @@
 import { Typography, Container, Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import React from "react";
+import React,{useState} from "react";
 import Editor from "./components/Editor";
+import Editor2 from "./components/Editor";
 
 function App() {
+  const [num,setNum]=useState(1);
   return (
     <React.Fragment>
       <CssBaseline enableColorScheme />
@@ -21,7 +23,8 @@ function App() {
           >
             Realtime Text Similarity Identification
           </Typography>
-          <Editor />
+          {Array(num).fill(0).map((_, i) =><Editor/>)}
+          <p onClick={()=>setNum(num+1)}>Add New Question</p>
         </Box>
       </Container>
     </React.Fragment>
@@ -29,3 +32,20 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
