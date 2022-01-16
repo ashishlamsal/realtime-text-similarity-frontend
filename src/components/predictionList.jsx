@@ -26,8 +26,8 @@ const PredictionList =({question}) => {
     return (
         
         <div>
-            {question.length>10 && question.length<20 && <Card text={"Matching similarity..."}/>}
-            {question.length>20 && Object.keys(questions).map((key,index)=>{
+            {question && question.length>10 && question.length<20 && <Card text={"Matching similarity..."}/>}
+            {question && question.length>20 && Object.keys(questions).map((key,index)=>{
                 // console.log(question,index);
                 return <Card text={key} key={index}/>
             })}

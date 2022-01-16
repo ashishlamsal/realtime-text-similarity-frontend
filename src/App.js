@@ -17,16 +17,20 @@ import {
 
 function App() {
 	const [num, setNum] = useState(1);
+  const [questions, setQuestions] = useState(['']);
+	
+  const addQuestionAt = (index, newQuestion)=>{
+    let copy = questions
+    copy[index] = newQuestion
+    setQuestions(copy)
+  }
 
-	const [items, setItems] = useState([
-		{ id: '1', text: 'Item 1' },
-		{ id: '2', text: 'Item 2' },
-		{ id: '3', text: 'Item 3' },
-		{ id: '4', text: 'Item 4' },
-	]);
 
 	const onDrop = ({ removedIndex, addedIndex }) => {
-		setItems((items) => arrayMoveImmutable(items, removedIndex, addedIndex));
+    console.log(removedIndex, addedIndex)
+    const new_  = arrayMoveImmutable(questions, removedIndex, addedIndex)
+    console.log(new_);
+		setQuestions(new_);
 	};
 
 	return (
@@ -58,17 +62,19 @@ function App() {
 							lockAxis="y"
 							onDrop={onDrop}
 						>
-							{num &&
-								Array(num).fill(0).map((item, index) => (
+							{questions &&
+								questions.map((item, index) => (
 									<Draggable key={index}>
 										<ListItem>
-                      <Editor />
+                      <Editor text={item} changeAt={addQuestionAt} index={index}/>
 										</ListItem>
 									</Draggable>
 								))}
 						</Container>
 					</List>
-					<p onClick={() => setNum(num + 1)}>Add New Question</p>
+					<p onClick={() => setQuestions([...questions, ''])}>
+						Add New Question
+					</p>
 
 				</Box>
 			</MuiContainer>

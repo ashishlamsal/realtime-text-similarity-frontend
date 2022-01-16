@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import './styles.scss';
@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box, flexbox } from '@mui/system';
-const Abc = () => {
+const Editor = ({ text, changeAt, index }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	const [question, setQuestion] = useState('');
 
@@ -23,16 +23,22 @@ const Abc = () => {
 		e.target.style.height = `${e.target.scrollHeight}px`;
 	};
 
+	useEffect(() => {
+		setQuestion(text);
+	}, [text]);
+
 	return (
-		<Box sx={{display:"flex"}}>
+		<Box sx={{ display: 'flex' }}>
 			<textarea
 				type="text"
 				onKeyDown={handleKeyDown}
 				onFocus={() => setInputFocused(true)}
 				onBlur={() => setInputFocused(false)}
 				onChange={(event) => {
-					setQuestion(event.target.value);
+					changeAt(index, event.target.value)
+					setQuestion(event.target.value)
 				}}
+				value={question}
 			/>
 			<ListItemIcon className="drag-handle">
 				<DragHandleIcon />
@@ -41,4 +47,4 @@ const Abc = () => {
 		</Box>
 	);
 };
-export default Abc;
+export default Editor;
