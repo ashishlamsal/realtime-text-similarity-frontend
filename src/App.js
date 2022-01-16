@@ -2,6 +2,7 @@ import { Typography, Container, Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import React,{useState} from "react";
 import Editor from "./components/Editor";
+import PredictionList from "./components/predictionList";
 import Editor2 from "./components/Editor";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           </Typography>
           {Array(num).fill(0).map((_, i) =><Editor/>)}
           <p onClick={()=>setNum(num+1)}>Add New Question</p>
+          {/* <PredictionList/> */}
         </Box>
       </Container>
     </React.Fragment>
