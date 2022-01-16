@@ -1,6 +1,6 @@
 import { default as React, useEffect, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
+import { EDITOR_JS_TOOLS } from "./tools";
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
@@ -35,6 +35,7 @@ const Editor = (props) => {
   }, []);
 
   const initEditor = () => {
+
     const editor = new EditorJS({
       holder: EDITTOR_HOLDER_ID,
       logLevel: "ERROR",
@@ -48,9 +49,8 @@ const Editor = (props) => {
         setEditorData(content);
       },
       autofocus: true,
-      tools: {
-        header: Header,
-      },
+      tools: EDITOR_JS_TOOLS,
+      // defaultBlock: 'question',
     });
   };
 

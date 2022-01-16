@@ -6,3 +6,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.input {
+  border: none;
+  background: none;
+  font-size: x-large;
+  width: -webkit-fill-available;
+}
+
+input-wrapper{
+  height: 4em;
+}
+
+li{
+  list-style-type: none; 
+  padding: .05rem;
+  margin: 0; 
+  border-radius: 5px;
+}
+
+li:hover{
+  background: lightblue;
+}
+
+ul{
+  background: lightcyan;
+  border-radius: 20px;
+}
