@@ -5,26 +5,29 @@ import Editor from './components/Editor';
 
 import ReactDOM from 'react-dom';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { arrayMoveImmutable } from 'array-move';
+import { arrayMoveImmutable,arrayMoveMutable } from 'array-move';
 
-import {
-	List,
-	ListItem,
-
-} from '@mui/material';
-
-
+import { List, ListItem } from '@mui/material';
 
 function App() {
-	const [num, setNum] = useState(1);
-  const [questions, setQuestions] = useState(['']);
-	
-  const addQuestionAt = (index, newQuestion)=>{
-    let copy = questions
-    copy[index] = newQuestion
-    setQuestions(copy)
-  }
+	const [questions, setQuestions] = useState(['']);
 
+	const changeQuestionAt = (index, newQuestion) => {
+		// console.log("changeQuestionAt called",index,newQuestion);
+		let copy = questions;
+		copy[index] = newQuestion;
+		setQuestions(copy);
+		console.log(questions)
+	};
+
+	const addQuestionAt = (index, newQuestion) => {
+		console.log("ading question at",index)
+		console.log("old questions:",questions);
+		let old=questions;
+		old.splice(index,0,newQuestion)
+		setQuestions(old);
+		console.log("new quesions",old);
+	};
 
 	const onDrop = ({ removedIndex, addedIndex }) => {
     console.log(removedIndex, addedIndex)
@@ -66,16 +69,22 @@ function App() {
 								questions.map((item, index) => (
 									<Draggable key={index}>
 										<ListItem>
-                      <Editor text={item} changeAt={addQuestionAt} index={index}/>
+											{console.log("rendering editor",index,item)}
+											<Editor
+												text={item}
+												changeAt={changeQuestionAt}
+												index={index}
+												addAt={addQuestionAt}
+											/>
 										</ListItem>
 									</Draggable>
 								))}
 						</Container>
 					</List>
+					
 					<p onClick={() => setQuestions([...questions, ''])}>
 						Add New Question
 					</p>
-
 				</Box>
 			</MuiContainer>
 		</React.Fragment>

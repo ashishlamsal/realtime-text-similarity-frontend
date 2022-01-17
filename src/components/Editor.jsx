@@ -14,13 +14,23 @@ import {
 } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box, flexbox } from '@mui/system';
-const Editor = ({ text, changeAt, index }) => {
+
+
+const Editor = ({ text, changeAt, index ,addAt}) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	
 
 	const handleKeyDown = (e) => {
 		e.target.style.height = 'inherit';
 		e.target.style.height = `${e.target.scrollHeight}px`;
+
+		if (e.code === 'Enter') {
+			if(e.shiftKey){
+				addAt(index+1,"");
+			}else if(e.ctrlKey){				
+				addAt(index,"");
+			}
+		}
 	};
 
 	
