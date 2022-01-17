@@ -18,13 +18,13 @@ import { Box, flexbox } from '@mui/system';
 
 const Editor = ({ text, changeAt, index ,addAt}) => {
 	const [inputFocused, setInputFocused] = useState(false);
-	
 
 	const handleKeyDown = (e) => {
 		e.target.style.height = 'inherit';
 		e.target.style.height = `${e.target.scrollHeight}px`;
 
 		if (e.code === 'Enter') {
+			e.preventDefault();
 			if(e.shiftKey){
 				addAt(index+1,"");
 			}else if(e.ctrlKey){				
@@ -45,6 +45,7 @@ const Editor = ({ text, changeAt, index ,addAt}) => {
 				onChange={(event) => {
 					changeAt(index, event.target.value)
 				}}
+				value={text}
 				
 			/>
 			<ListItemIcon className="drag-handle">
