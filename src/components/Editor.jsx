@@ -113,41 +113,43 @@ const Editor = ({
 		}
 	};
 	return (
-		<Accordion inputFocused={inputFocused} question={text}>
-			<Grid container alignItems={'center'} justifyContent={'center'}>
-				<Grid item xs={10}>
-					<TextareaAutosize
-						type="text"
-						onKeyDown={handleKeyDown}
-						onFocus={() => setInputFocused(true)}
-						onBlur={() => setInputFocused(false)}
-						onChange={(event) => {
-							changeAt(index, event.target.value);
-						}}
-						value={text}
-						id={text}
-						ref={ref}
+		<div style={{ width: '100%' }}>
+			<Accordion inputFocused={inputFocused} question={text}>
+				<Grid container alignItems={'center'} justifyContent={'center'}>
+					<Grid item xs={10}>
+						<TextareaAutosize
+							type="text"
+							onKeyDown={handleKeyDown}
+							onFocus={() => setInputFocused(true)}
+							onBlur={() => setInputFocused(false)}
+							onChange={(event) => {
+								changeAt(index, event.target.value);
+							}}
+							value={text}
+							id={text}
+							ref={ref}
+						/>
+					</Grid>
+					<Grid item xs={1}>
+						<ListItemIcon className="drag-handle">
+							<DragHandleIcon />
+						</ListItemIcon>
+					</Grid>
+					<Grid item xs={1}>
+						<ListItemIcon className="drag-handle">
+							{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
+							<DeleteRounded onClick={handleClickOpen} />
+						</ListItemIcon>
+					</Grid>
+					<DeleteDialog
+						selectedValue={index}
+						deleteAt={deleteAt}
+						open={open}
+						onClose={handleClose}
 					/>
 				</Grid>
-				<Grid item xs={1}>
-					<ListItemIcon className="drag-handle">
-						<DragHandleIcon />
-					</ListItemIcon>
-				</Grid>
-				<Grid item xs={1}>
-					<ListItemIcon className="drag-handle">
-						{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
-						<DeleteRounded onClick={handleClickOpen} />
-					</ListItemIcon>
-				</Grid>
-				<DeleteDialog
-					selectedValue={index}
-					deleteAt={deleteAt}
-					open={open}
-					onClose={handleClose}
-				/>
-			</Grid>
-		</Accordion>
+			</Accordion>
+		</div>
 	);
 };
 export default Editor;
