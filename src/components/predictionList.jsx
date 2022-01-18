@@ -1,4 +1,4 @@
-// import React, { useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
 // import Card from "./card"
 
 // const PredictionList =({question}) => {
@@ -25,14 +25,14 @@
 //     },[question])
 //     return (
 
-//         <div>
-//             {question && question.length>10 && question.length<20 && <Card text={"Matching similarity..."}/>}
-//             {question && question.length>20 && Object.keys(questions).map((key,index)=>{
-//                 // console.log(question,index);
-//                 return <Card text={key} key={index}/>
-//             })}
+// <div>
+//     {question && question.length>10 && question.length<20 && <Card text={"Matching similarity..."}/>}
+//     {question && question.length>20 && Object.keys(questions).map((key,index)=>{
+//         // console.log(question,index);
+//         return <Card text={key} key={index}/>
+//     })}
 
-//         </div>
+// </div>
 //     )
 // }
 // export default PredictionList;
@@ -44,15 +44,36 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function SimpleAccordion({ inputFocused, children }) {
+export default function SimpleAccordion({ inputFocused, children, question }) {
 	const [expand, setExpand] = React.useState(false);
 	const handleToggle = () => {
 		setExpand(!expand);
 	};
+	const [questions, setQuestions] = useState([]);
+	useEffect(() => {
+		let postData = { question: question };
+		fetch('http://localhost:5000', {
+			body: JSON.stringify(postData),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+		})
+			.then((res) => res.json())
+			.then((sim) => {
+				console.log(sim);
+				//   console.log(sim)
+				setQuestions(sim);
+			})
+			.catch((err) => {
+				console.log('fetch error');
+				console.log(err);
+			});
+	}, [question]);
 
 	return (
 		<div>
-			<Accordion expanded={inputFocused || expand}>
+			<Accordion expanded={inputFocused || expand} sx={{width:"inherit"}}>
 				{/* {propes.children} */}
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon onClick={handleToggle} />}
@@ -63,9 +84,23 @@ export default function SimpleAccordion({ inputFocused, children }) {
 					{children}
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography>
-						Lorem ipsum 
-					</Typography>
+					<div>
+						{question && question.length > 10 && question.length < 20 && (
+							// <Card text={'Matching similarity...'} />
+							<Typography>Matching similarity...</Typography>
+						)}
+						{question &&
+							question.length > 20 &&
+							Object.keys(questions).map((key, index) => {
+								// console.log(question,index);
+								// return <Card text={key} key={index} />;
+								return (
+									<Typography key={index}>
+										{key}
+									</Typography>
+								);
+							})}
+					</div>
 				</AccordionDetails>
 			</Accordion>
 		</div>
