@@ -41,7 +41,7 @@ const Editor = ({
 		}
 	};
 	return (
-		<Accordion inputFocused={inputFocused}>
+		<Accordion inputFocused={inputFocused} question={text}>
 			<Grid container alignItems={'center'} justifyContent={'center'}>
 				<Grid item xs={10}>
 					<TextareaAutosize
