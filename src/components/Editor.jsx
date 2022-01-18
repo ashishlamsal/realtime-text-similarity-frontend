@@ -1,37 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import React, { useEffect, useState, useRef } from 'react';
 import './styles.scss';
 import PredictionList from './predictionList';
-import { onBlur } from 'draft-js/lib/DraftEditorEditHandler';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import {
-	List,
-	ListItem,
 	ListItemIcon,
-	ListItemText,
-	ListItemSecondaryAction,
 } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box, flexbox } from '@mui/system';
 
-
-const Editor = ({ text, changeAt, index, addAt }) => {
+const Editor = ({
+	text,
+	changeAt,
+	index,
+	addAt,
+	setNewBlockPos,
+	newBlockPos,
+}) => {
 	const [inputFocused, setInputFocused] = useState(false);
+	const ref = useRef();
+
+	useEffect(() => {
+		if (newBlockPos == index) {
+			ref.current.focus();
+		}
+		setNewBlockPos(-1);
+	}, [newBlockPos]);
 
 	const handleKeyDown = (e) => {
-		
 		if (e.code === 'Enter') {
 			e.preventDefault();
 			if (e.shiftKey) {
-				addAt(index + 1, "");
+				addAt(index + 1, '');
+				setNewBlockPos(index + 1);
 			} else if (e.ctrlKey) {
-				addAt(index, "");
+				addAt(index, '');
+				setNewBlockPos(index);
 			}
 		}
 	};
-
 
 	return (
 		<React.Fragment>
@@ -42,10 +49,11 @@ const Editor = ({ text, changeAt, index, addAt }) => {
 					onFocus={() => setInputFocused(true)}
 					onBlur={() => setInputFocused(false)}
 					onChange={(event) => {
-						changeAt(index, event.target.value)
+						changeAt(index, event.target.value);
 					}}
 					value={text}
-
+					id={text}
+					ref={ref}
 				/>
 				<ListItemIcon className="drag-handle">
 					<DragHandleIcon />
@@ -53,7 +61,6 @@ const Editor = ({ text, changeAt, index, addAt }) => {
 			</Box>
 			{inputFocused && <PredictionList question={text} />}
 		</React.Fragment>
-
 	);
 };
 export default Editor;

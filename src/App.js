@@ -3,7 +3,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import React, { useState } from 'react';
 import Editor from './components/Editor';
 
-import ReactDOM from 'react-dom';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { arrayMoveImmutable, arrayMoveMutable } from 'array-move';
 
@@ -11,28 +10,22 @@ import { List, ListItem } from '@mui/material';
 
 function App() {
 	const [questions, setQuestions] = useState(['']);
+	const [newBlockPos, setNewBlockPos] = useState(-1);
 
 	const changeQuestionAt = (index, newQuestion) => {
-		// console.log("changeQuestionAt called",index,newQuestion);
 		let copy = [...questions];
 		copy[index] = newQuestion;
 		setQuestions(copy);
-		console.log(questions);
 	};
 
 	const addQuestionAt = (index, newQuestion) => {
-		console.log('ading question at', index);
-		console.log('old questions:', questions);
 		let old = [...questions];
 		old.splice(index, 0, newQuestion);
 		setQuestions(old);
-		console.log('new quesions', old);
 	};
 
 	const onDrop = ({ removedIndex, addedIndex }) => {
-		console.log(removedIndex, addedIndex);
 		const new_ = arrayMoveImmutable(questions, removedIndex, addedIndex);
-		console.log(new_);
 		setQuestions(new_);
 	};
 
@@ -53,11 +46,6 @@ function App() {
 					>
 						Realtime Text Similarity Identification
 					</Typography>
-					{/* {Array(num)
-						.fill(0)
-						.map((_, i) => (
-							<Editor />
-						))} */}
 
 					<List>
 						<Container
@@ -69,22 +57,19 @@ function App() {
 								questions.map((item, index) => (
 									<Draggable key={index}>
 										<ListItem>
-											{console.log('rendering editor', index, item)}
 											<Editor
 												text={item}
 												changeAt={changeQuestionAt}
 												index={index}
 												addAt={addQuestionAt}
+												newBlockPos={newBlockPos}
+												setNewBlockPos={setNewBlockPos}
 											/>
 										</ListItem>
 									</Draggable>
 								))}
 						</Container>
 					</List>
-
-					<p onClick={() => setQuestions([...questions, ''])}>
-						Add New Question
-					</p>
 				</Box>
 			</MuiContainer>
 		</React.Fragment>
