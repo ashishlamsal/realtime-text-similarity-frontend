@@ -9,21 +9,16 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import Accordion from './predictionList';
 // import { Box, flexbox } from '@mui/system';
 
-import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
 
-function SimpleDialog(props) {
+
+import Stack from '@mui/material/Stack';
+
+function DeleteDialog(props) {
 	const { onClose, selectedValue, deleteAt, open } = props;
 
 	const handleClose = () => {
@@ -31,35 +26,46 @@ function SimpleDialog(props) {
 	};
 
 	const handleListItemClick = (value) => {
-		if (value === 1){
-			deleteAt(selectedValue)
+		if (value === 1) {
+			deleteAt(selectedValue);
 		}
 		onClose(value);
 	};
 
 	return (
 		<Dialog onClose={handleClose} open={open}>
-			<DialogTitle>Are you sure you want to delete this question?</DialogTitle>
-			<List sx={{ pt: 0 }}>
-				
-					<ListItem
-						button
-						onClick={() => handleListItemClick(1)}
-						key={1}
-					>
-						Yes
-					</ListItem>
-					<ListItem
-						button
-						onClick={() => handleListItemClick(0)}
-						key={0}
-					>
-						No
-					</ListItem>
-				
+			<DialogTitle
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					flexWrap: 'wrap',
+				}}
+			>
+				<DeleteIcon/>
+				Are you sure?
+			</DialogTitle>
 
-			
-			</List>
+			<Typography p={2}>
+				This process is irreversible and the data will be lost.
+			</Typography>
+			<Stack direction="row">
+				<ListItemText
+					button
+					onClick={() => handleListItemClick(1)}
+					key={1}
+					style={{ background: 'aquamarine', margin: 'auto'}}
+				>
+					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">Yes</Typography>
+				</ListItemText>
+				<ListItemText
+					button
+					onClick={() => handleListItemClick(0)}
+					key={0}
+					style={{ background: 'white', margin: 'auto'}}
+				>
+					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">No</Typography>
+				</ListItemText>
+			</Stack>
 		</Dialog>
 	);
 }
@@ -134,13 +140,12 @@ const Editor = ({
 						<DeleteRounded onClick={handleClickOpen} />
 					</ListItemIcon>
 				</Grid>
-				<SimpleDialog
+				<DeleteDialog
 					selectedValue={index}
 					deleteAt={deleteAt}
 					open={open}
 					onClose={handleClose}
 				/>
-				
 			</Grid>
 		</Accordion>
 	);

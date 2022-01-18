@@ -72,8 +72,8 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 	}, [question]);
 
 	return (
-		<div>
-			<Accordion expanded={inputFocused || expand} sx={{width:"inherit"}}>
+		<div style={{width:"100%"}}>
+			<Accordion expanded={inputFocused || expand}>
 				{/* {propes.children} */}
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon onClick={handleToggle} />}

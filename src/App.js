@@ -2,6 +2,8 @@ import { Typography, Container as MuiContainer, Box } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import React, { useState } from 'react';
 import Editor from './components/Editor';
+import TopBar from './components/TopBar';
+
 
 import { Container, Draggable } from 'react-smooth-dnd';
 import { arrayMoveImmutable, arrayMoveMutable } from 'array-move';
@@ -55,6 +57,8 @@ function App() {
 					>
 						Realtime Text Similarity Identification
 					</Typography>
+
+					<TopBar questions={questions} setQuestions={setQuestions} />
 
 					<List>
 						<Container
