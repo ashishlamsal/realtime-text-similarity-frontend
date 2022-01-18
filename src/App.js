@@ -24,6 +24,15 @@ function App() {
 		setQuestions(old);
 	};
 
+	const deleteAt = (index) => {
+		let old = [...questions];
+		old.splice(index, 1);
+		if (old.length == 0) {
+			old.push('');
+		}
+		setQuestions(old);
+	};
+
 	const onDrop = ({ removedIndex, addedIndex }) => {
 		const new_ = arrayMoveImmutable(questions, removedIndex, addedIndex);
 		setQuestions(new_);
@@ -64,6 +73,7 @@ function App() {
 												addAt={addQuestionAt}
 												newBlockPos={newBlockPos}
 												setNewBlockPos={setNewBlockPos}
+												deleteAt={deleteAt}
 											/>
 										</ListItem>
 									</Draggable>

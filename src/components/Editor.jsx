@@ -5,6 +5,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import DeleteRounded from '@mui/icons-material/DeleteRounded';
+import Accordion from './predictionList';
 // import { Box, flexbox } from '@mui/system';
 
 const Editor = ({
@@ -14,6 +16,7 @@ const Editor = ({
 	addAt,
 	setNewBlockPos,
 	newBlockPos,
+	deleteAt,
 }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 	const ref = useRef();
@@ -38,33 +41,40 @@ const Editor = ({
 		}
 	};
 	return (
-		<Grid container alignItems={'center'} justifyContent={'center'}>
-			<Grid item xs={10}>
-				<TextareaAutosize
-					type="text"
-					onKeyDown={handleKeyDown}
-					onFocus={() => setInputFocused(true)}
-					onBlur={() => setInputFocused(false)}
-					onChange={(event) => {
-						changeAt(index, event.target.value);
-					}}
-					value={text}
-					id={text}
-					ref={ref}
-				/>
-			</Grid>
-			<Grid item xs={2}>
-				<ListItemIcon className="drag-handle">
-					<DragHandleIcon />
-				</ListItemIcon>
-			</Grid>
-
-			{inputFocused && (
+		<Accordion inputFocused={inputFocused}>
+			<Grid container alignItems={'center'} justifyContent={'center'}>
 				<Grid item xs={10}>
-					<PredictionList question={text} />
+					<TextareaAutosize
+						type="text"
+						onKeyDown={handleKeyDown}
+						onFocus={() => setInputFocused(true)}
+						onBlur={() => setInputFocused(false)}
+						onChange={(event) => {
+							changeAt(index, event.target.value);
+						}}
+						value={text}
+						id={text}
+						ref={ref}
+					/>
 				</Grid>
-			)}
-		</Grid>
+				<Grid item xs={1}>
+					<ListItemIcon className="drag-handle">
+						<DragHandleIcon />
+					</ListItemIcon>
+				</Grid>
+				<Grid item xs={1}>
+					<ListItemIcon className="drag-handle">
+						<DeleteRounded onClick={() => deleteAt(index)} />
+					</ListItemIcon>
+				</Grid>
+
+				{/* {
+					<Grid item xs={10}>
+						<PredictionList question={text} />
+					</Grid>
+				} */}
+			</Grid>
+		</Accordion>
 	);
 };
 export default Editor;

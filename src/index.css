@@ -26,5 +26,5 @@ textarea {
 	resize: none;
 }
 textarea:focus {
-	outline: 2px solid rgb(98, 212, 212);
+	outline: none;
 }
