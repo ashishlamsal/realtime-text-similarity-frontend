@@ -3,11 +3,9 @@ import './styles.scss';
 import PredictionList from './predictionList';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import {
-	ListItemIcon,
-} from '@mui/material';
+import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { Box, flexbox } from '@mui/system';
+// import { Box, flexbox } from '@mui/system';
 
 const Editor = ({
 	text,
@@ -30,19 +28,18 @@ const Editor = ({
 	const handleKeyDown = (e) => {
 		if (e.code === 'Enter') {
 			e.preventDefault();
-			if (e.shiftKey) {
-				addAt(index + 1, '');
-				setNewBlockPos(index + 1);
-			} else if (e.ctrlKey) {
+			if (e.ctrlKey) {
 				addAt(index, '');
 				setNewBlockPos(index);
+				return;
 			}
+			addAt(index + 1, '');
+			setNewBlockPos(index + 1);
 		}
 	};
-
 	return (
-		<React.Fragment>
-			<Box sx={{ display: 'flex' }}>
+		<Grid container alignItems={'center'} justifyContent={'center'}>
+			<Grid item xs={10}>
 				<TextareaAutosize
 					type="text"
 					onKeyDown={handleKeyDown}
@@ -55,12 +52,19 @@ const Editor = ({
 					id={text}
 					ref={ref}
 				/>
+			</Grid>
+			<Grid item xs={2}>
 				<ListItemIcon className="drag-handle">
 					<DragHandleIcon />
 				</ListItemIcon>
-			</Box>
-			{inputFocused && <PredictionList question={text} />}
-		</React.Fragment>
+			</Grid>
+
+			{inputFocused && (
+				<Grid item xs={10}>
+					<PredictionList question={text} />
+				</Grid>
+			)}
+		</Grid>
 	);
 };
 export default Editor;

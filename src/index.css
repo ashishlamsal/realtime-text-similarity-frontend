@@ -15,16 +15,16 @@ textarea {
 	border-left-style: hidden;
 	border-bottom-style: hidden;
 
-  font-size: 2em;
+	font-size: 1rem;
 
-  margin: 2%;
-  padding: 2%;
+	margin: 0.2rem;
+	padding: 0.2rem;
 
-  overflow: hidden;
-  width: 90%;
+	overflow: hidden;
+	width: 90%;
 
-
-  resize: none;
+	resize: none;
 }
-
-
+textarea:focus {
+	outline: 2px solid rgb(98, 212, 212);
+}
