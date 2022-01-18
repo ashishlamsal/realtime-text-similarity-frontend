@@ -31,8 +31,8 @@ function SimpleDialog(props) {
 	};
 
 	const handleListItemClick = (value) => {
-		if (value === 1){
-			deleteAt(selectedValue)
+		if (value === 1) {
+			deleteAt(selectedValue);
 		}
 		onClose(value);
 	};
@@ -41,24 +41,12 @@ function SimpleDialog(props) {
 		<Dialog onClose={handleClose} open={open}>
 			<DialogTitle>Are you sure you want to delete this question?</DialogTitle>
 			<List sx={{ pt: 0 }}>
-				
-					<ListItem
-						button
-						onClick={() => handleListItemClick(1)}
-						key={1}
-					>
-						Yes
-					</ListItem>
-					<ListItem
-						button
-						onClick={() => handleListItemClick(0)}
-						key={0}
-					>
-						No
-					</ListItem>
-				
-
-			
+				<ListItem button onClick={() => handleListItemClick(1)} key={1}>
+					Yes
+				</ListItem>
+				<ListItem button onClick={() => handleListItemClick(0)} key={0}>
+					No
+				</ListItem>
 			</List>
 		</Dialog>
 	);
@@ -107,42 +95,43 @@ const Editor = ({
 		}
 	};
 	return (
-		<Accordion inputFocused={inputFocused} question={text}>
-			<Grid container alignItems={'center'} justifyContent={'center'}>
-				<Grid item xs={10}>
-					<TextareaAutosize
-						type="text"
-						onKeyDown={handleKeyDown}
-						onFocus={() => setInputFocused(true)}
-						onBlur={() => setInputFocused(false)}
-						onChange={(event) => {
-							changeAt(index, event.target.value);
-						}}
-						value={text}
-						id={text}
-						ref={ref}
+		<div style={{ width: '100%' }}>
+			<Accordion inputFocused={inputFocused} question={text}>
+				<Grid container alignItems={'center'} justifyContent={'center'}>
+					<Grid item xs={10}>
+						<TextareaAutosize
+							type="text"
+							onKeyDown={handleKeyDown}
+							onFocus={() => setInputFocused(true)}
+							onBlur={() => setInputFocused(false)}
+							onChange={(event) => {
+								changeAt(index, event.target.value);
+							}}
+							value={text}
+							id={text}
+							ref={ref}
+						/>
+					</Grid>
+					<Grid item xs={1}>
+						<ListItemIcon className="drag-handle">
+							<DragHandleIcon />
+						</ListItemIcon>
+					</Grid>
+					<Grid item xs={1}>
+						<ListItemIcon className="drag-handle">
+							{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
+							<DeleteRounded onClick={handleClickOpen} />
+						</ListItemIcon>
+					</Grid>
+					<SimpleDialog
+						selectedValue={index}
+						deleteAt={deleteAt}
+						open={open}
+						onClose={handleClose}
 					/>
 				</Grid>
-				<Grid item xs={1}>
-					<ListItemIcon className="drag-handle">
-						<DragHandleIcon />
-					</ListItemIcon>
-				</Grid>
-				<Grid item xs={1}>
-					<ListItemIcon className="drag-handle">
-						{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
-						<DeleteRounded onClick={handleClickOpen} />
-					</ListItemIcon>
-				</Grid>
-				<SimpleDialog
-					selectedValue={index}
-					deleteAt={deleteAt}
-					open={open}
-					onClose={handleClose}
-				/>
-				
-			</Grid>
-		</Accordion>
+			</Accordion>
+		</div>
 	);
 };
 export default Editor;
