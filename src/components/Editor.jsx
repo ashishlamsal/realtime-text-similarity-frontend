@@ -4,6 +4,7 @@ import StarterKit from '@tiptap/starter-kit';
 import './styles.scss';
 import PredictionList from './predictionList';
 import { onBlur } from 'draft-js/lib/DraftEditorEditHandler';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import {
 	List,
@@ -16,42 +17,40 @@ import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box, flexbox } from '@mui/system';
 
 
-const Editor = ({ text, changeAt, index ,addAt}) => {
+const Editor = ({ text, changeAt, index, addAt }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 
 	const handleKeyDown = (e) => {
-		e.target.style.height = 'inherit';
-		e.target.style.height = `${e.target.scrollHeight}px`;
-
+		
 		if (e.code === 'Enter') {
 			e.preventDefault();
-			if(e.shiftKey){
-				addAt(index+1,"");
-			}else if(e.ctrlKey){				
-				addAt(index,"");
+			if (e.shiftKey) {
+				addAt(index + 1, "");
+			} else if (e.ctrlKey) {
+				addAt(index, "");
 			}
 		}
 	};
 
-	
+
 	return (
 		<React.Fragment>
-		<Box sx={{ display: 'flex' }}>
-			<textarea
-				type="text"
-				onKeyDown={handleKeyDown}
-				onFocus={() => setInputFocused(true)}
-				onBlur={() => setInputFocused(false)}
-				onChange={(event) => {
-					changeAt(index, event.target.value)
-				}}
-				value={text}
-				
-			/>
-			<ListItemIcon className="drag-handle">
-				<DragHandleIcon />
-			</ListItemIcon>
-		</Box>
+			<Box sx={{ display: 'flex' }}>
+				<TextareaAutosize
+					type="text"
+					onKeyDown={handleKeyDown}
+					onFocus={() => setInputFocused(true)}
+					onBlur={() => setInputFocused(false)}
+					onChange={(event) => {
+						changeAt(index, event.target.value)
+					}}
+					value={text}
+
+				/>
+				<ListItemIcon className="drag-handle">
+					<DragHandleIcon />
+				</ListItemIcon>
+			</Box>
 			{inputFocused && <PredictionList question={text} />}
 		</React.Fragment>
 
