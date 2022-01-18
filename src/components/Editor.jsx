@@ -9,6 +9,61 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import Accordion from './predictionList';
 // import { Box, flexbox } from '@mui/system';
 
+import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
+import { blue } from '@mui/material/colors';
+
+function SimpleDialog(props) {
+	const { onClose, selectedValue, deleteAt, open } = props;
+
+	const handleClose = () => {
+		onClose(selectedValue);
+	};
+
+	const handleListItemClick = (value) => {
+		if (value === 1){
+			deleteAt(selectedValue)
+		}
+		onClose(value);
+	};
+
+	return (
+		<Dialog onClose={handleClose} open={open}>
+			<DialogTitle>Are you sure you want to delete this question?</DialogTitle>
+			<List sx={{ pt: 0 }}>
+				
+					<ListItem
+						button
+						onClick={() => handleListItemClick(1)}
+						key={1}
+					>
+						Yes
+					</ListItem>
+					<ListItem
+						button
+						onClick={() => handleListItemClick(0)}
+						key={0}
+					>
+						No
+					</ListItem>
+				
+
+			
+			</List>
+		</Dialog>
+	);
+}
+
 const Editor = ({
 	text,
 	changeAt,
@@ -19,6 +74,17 @@ const Editor = ({
 	deleteAt,
 }) => {
 	const [inputFocused, setInputFocused] = useState(false);
+
+	const [open, setOpen] = React.useState(false);
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = (value) => {
+		setOpen(false);
+		// setSelectedValue(value);
+	};
+
 	const ref = useRef();
 
 	useEffect(() => {
@@ -64,15 +130,17 @@ const Editor = ({
 				</Grid>
 				<Grid item xs={1}>
 					<ListItemIcon className="drag-handle">
-						<DeleteRounded onClick={() => deleteAt(index)} />
+						{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
+						<DeleteRounded onClick={handleClickOpen} />
 					</ListItemIcon>
 				</Grid>
-
-				{/* {
-					<Grid item xs={10}>
-						<PredictionList question={text} />
-					</Grid>
-				} */}
+				<SimpleDialog
+					selectedValue={index}
+					deleteAt={deleteAt}
+					open={open}
+					onClose={handleClose}
+				/>
+				
 			</Grid>
 		</Accordion>
 	);

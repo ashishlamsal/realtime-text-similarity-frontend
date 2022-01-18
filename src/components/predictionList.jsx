@@ -64,8 +64,7 @@ export default function SimpleAccordion({ inputFocused, children }) {
 				</AccordionSummary>
 				<AccordionDetails>
 					<Typography>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-						malesuada lacus ex, sit amet blandit leo lobortis eget.
+						Lorem ipsum 
 					</Typography>
 				</AccordionDetails>
 			</Accordion>
