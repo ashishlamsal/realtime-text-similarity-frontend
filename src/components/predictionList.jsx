@@ -61,18 +61,17 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 		})
 			.then((res) => res.json())
 			.then((sim) => {
-				console.log(sim);
-				//   console.log(sim)
 				setQuestions(sim);
 			})
 			.catch((err) => {
-				console.log('fetch error');
-				console.log(err);
+				setQuestions({
+					'Some error occured while making request to backend': 0,
+				});
 			});
 	}, [question]);
 
 	return (
-		<div style={{width:"100%"}}>
+		<div style={{ width: '100%' }}>
 			<Accordion expanded={inputFocused || expand}>
 				{/* {propes.children} */}
 				<AccordionSummary
@@ -83,25 +82,23 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 				>
 					{children}
 				</AccordionSummary>
-				<AccordionDetails>
-					<div>
-						{question && question.length > 10 && question.length < 20 && (
-							// <Card text={'Matching similarity...'} />
-							<Typography>Matching similarity...</Typography>
-						)}
-						{question &&
-							question.length > 20 &&
-							Object.keys(questions).map((key, index) => {
-								// console.log(question,index);
-								// return <Card text={key} key={index} />;
-								return (
-									<Typography key={index}>
-										{key}
-									</Typography>
-								);
-							})}
-					</div>
-				</AccordionDetails>
+				{question && question.length > 10 && (
+					<AccordionDetails>
+						<div>
+							{question && question.length <= 20 && (
+								// <Card text={'Matching similarity...'} />
+								<Typography>Matching similarity...</Typography>
+							)}
+							{question &&
+								question.length > 20 &&
+								Object.keys(questions).map((key, index) => {
+									// console.log(question,index);
+									// return <Card text={key} key={index} />;
+									return <Typography key={index}>{key}</Typography>;
+								})}
+						</div>
+					</AccordionDetails>
+				)}
 			</Accordion>
 		</div>
 	);
