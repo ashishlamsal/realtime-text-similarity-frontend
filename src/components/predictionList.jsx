@@ -52,7 +52,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 	const [questions, setQuestions] = useState([]);
 	useEffect(() => {
 		let postData = { question: question };
-		fetch('http://localhost:5000', {
+		fetch('http://001f-35-227-155-192.ngrok.io', {
 			body: JSON.stringify(postData),
 			headers: {
 				'Content-Type': 'application/json',
@@ -61,6 +61,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 		})
 			.then((res) => res.json())
 			.then((sim) => {
+				console.log(sim);
 				setQuestions(sim);
 			})
 			.catch((err) => {
@@ -91,9 +92,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 							)}
 							{question &&
 								question.length > 20 &&
-								Object.keys(questions).map((key, index) => {
-									// console.log(question,index);
-									// return <Card text={key} key={index} />;
+								questions.map((key, index) => {
 									return <Typography key={index}>{key}</Typography>;
 								})}
 						</div>
