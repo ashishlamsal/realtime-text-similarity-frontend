@@ -52,7 +52,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 	const [questions, setQuestions] = useState([]);
 	useEffect(() => {
 		let postData = { question: question };
-		fetch('http://001f-35-227-155-192.ngrok.io', {
+		fetch('http://127.0.0.1:5000', {
 			body: JSON.stringify(postData),
 			headers: {
 				'Content-Type': 'application/json',

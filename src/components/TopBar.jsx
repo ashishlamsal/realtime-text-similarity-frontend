@@ -11,46 +11,50 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+import CheckIcon from '@mui/icons-material/Check';
 
 function SubjectSelection(props) {
-	const { onClose, selectedSubject, open } = props;
-
+	const { onClose, selectedSubject, open, setLoading } = props;
+	const algorithms = [
+		'word2vec',
+		'BERT',
+		'Arora',
+		'Universal Sentence Encoder',
+	];
 	const handleClose = () => {
 		onClose(selectedSubject);
 	};
 
 	const handleListItemClick = (value) => {
+		// request to the server here
+		setLoading(true);
 		onClose(value);
+
+		fetch('http://127.0.0.1:5000')
+			.then((response) => {
+				setLoading(false);
+				response.json();
+			})
+			.then((data) => {
+				console.log(data);
+			});
 	};
 
 	return (
 		<Dialog onClose={handleClose} open={open}>
-			<DialogTitle>Select Subject</DialogTitle>
+			<DialogTitle>Select Algorithm</DialogTitle>
 			<List sx={{ pt: 0 }}>
-				<ListItem
-					button
-					onClick={() => handleListItemClick('Applied Maths')}
-					key={'Applied Maths'}
-				>
-					<ListItemText primary={'Applied Maths'} />
-				</ListItem>
-
-                <ListItem
-					button
-					onClick={() => handleListItemClick('Electronics')}
-					key={'Electronics'}
-				>
-					<ListItemText primary={'Electronics'} />
-				</ListItem>
-
-
-				<ListItem
-					autoFocus
-					button
-					onClick={() => handleListItemClick('addAccount')}
-				>
-					<ListItemText primary="Create new subject" />
-				</ListItem>
+				{algorithms.map((index) => (
+					<ListItem
+						button
+						onClick={() => handleListItemClick(index)}
+						key={index}
+					>
+						<ListItemText primary={index} />
+					</ListItem>
+				))}
 			</List>
 		</Dialog>
 	);
@@ -58,7 +62,10 @@ function SubjectSelection(props) {
 
 function TopBar({ questions, setQuestions }) {
 	const [open, setOpen] = useState(false);
-	const [selectedSubject, setSelectedSubject] = useState("Applied Maths");
+	const [selectedSubject, setSelectedSubject] = useState('word2vec');
+
+	const [loading, setLoading] = useState(false);
+
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -75,28 +82,49 @@ function TopBar({ questions, setQuestions }) {
 		a.download = 'questions.json';
 		a.click();
 	};
+
 	const newQuestionSet = () => {
 		saveQuestions();
 		setQuestions(['']);
 	};
 	return (
-		<Grid container spacing={2}>
-			<Grid item style={{ textAlign: 'center' }}>
+		<Grid container spacing={2} sx={{margin: "5px"}}>
+			<Grid item style={{ textAlign: 'center',  }}>
 				<NewIcon onClick={newQuestionSet} />
 			</Grid>
 			<Grid item style={{ textAlign: 'center' }}>
 				<SaveIcon onClick={saveQuestions} />
 			</Grid>
+
 			<Grid item style={{ textAlign: 'center' }}>
 				<LibraryBooksIcon onClick={handleClickOpen} />
 				<SubjectSelection
 					selectedSubject={selectedSubject}
 					open={open}
 					onClose={handleClose}
+					setLoading={setLoading}
 				/>
 			</Grid>
-            <Grid item style={{ textAlign: 'center' }}>
-                <Typography>{selectedSubject}</Typography>
+
+			<Grid item style={{ textAlign: 'center', display: 'flex' }}>
+				<Typography sx={{ marginRight: '5px' }}>{selectedSubject}</Typography>
+				{loading && (
+					<CircularProgress
+					size={20}
+					/>
+				)}
+				{!loading && (
+					<CheckIcon
+						sx={{
+							bgcolor: green[500],
+							color: 'white',
+							borderRadius: '50%',
+							width: '1rem',
+							height: '1rem',
+							marginTop: '4px'
+						}}
+					/>
+				)}
 			</Grid>
 		</Grid>
 	);
