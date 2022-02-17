@@ -21,12 +21,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 function SubjectSelection(props) {
 	const { onClose, selectedSubject, open, setLoading, setFailed } = props;
-	const algorithms = [
-		'Word2Vec',
-		'BERT',
-		'Arora',
-		'Universal Sentence Encoder',
-	];
+	const algorithms = {
+		'Word2Vec': 'WORD_2_VEC',
+		'BERT': 'BERT',
+		'Arora': 'ARORA',
+		'Universal Sentence Encoder': 'USE',
+	};
+
 	const handleClose = () => {
 		onClose(selectedSubject);
 	};
@@ -36,10 +37,11 @@ function SubjectSelection(props) {
 	}, []);
 
 	const handleAlgoSwitch = (value) => {
+		
 		setLoading(true);
 		onClose(value);
 
-		fetch(`http://127.0.0.1:5000/?algo=${value}`)
+		fetch(`http://127.0.0.1:5001/?algo=${algorithms[value]}`)
 			.then((response) => {
 				setLoading(false);
 				setFailed(false);
@@ -59,7 +61,7 @@ function SubjectSelection(props) {
 		<Dialog onClose={handleClose} open={open}>
 			<DialogTitle>Select Algorithm</DialogTitle>
 			<List sx={{ pt: 0 }}>
-				{algorithms.map((index) => (
+				{Object.keys(algorithms).map((index) => (
 					<ListItem button onClick={() => handleAlgoSwitch(index)} key={index}>
 						<ListItemText primary={index} />
 					</ListItem>
@@ -131,13 +133,24 @@ function TopBar({ questions, setQuestions }) {
 				<Typography variant="h6" sx={{ marginRight: '5px' }}>
 					{selectedSubject}
 				</Typography>
-				{loading && <CircularProgress size={20} sx={{ color: green[500] }} />}
+				{loading && (
+					<CircularProgress
+						size={20}
+						sx={{
+							color: green[500],
+							width: '1.1rem',
+							height: '1.1rem',
+							paddingTop: '1px',
+						}}
+					/>
+				)}
 				{!loading && failed && (
 					<CancelIcon
 						sx={{
 							color: red[500],
-							width: '1.4rem',
-							height: '1.4rem',
+							width: '1.2rem',
+							height: '1.2rem',
+							marginBottom: '3px'
 						}}
 					/>
 				)}
@@ -149,7 +162,7 @@ function TopBar({ questions, setQuestions }) {
 							borderRadius: '50%',
 							width: '1.1rem',
 							height: '1.1rem',
-							paddingTop: '1px',
+							paddingTop: '1.5px',
 						}}
 					/>
 				)}
