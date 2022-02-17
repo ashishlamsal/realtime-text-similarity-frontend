@@ -127,20 +127,28 @@ function TopBar({ questions, setQuestions }) {
 					setFailed={setFailed}
 				/>
 			</Grid>
-			<Grid item sx={{ display: 'flex', alignItems: 'baseline' }}>
+			<Grid item sx={{ display: 'flex', alignItems: 'center' }}>
 				<Typography variant="h6" sx={{ marginRight: '5px' }}>
 					{selectedSubject}
 				</Typography>
 				{loading && <CircularProgress size={20} sx={{ color: green[500] }} />}
-				{!loading && failed && <CancelIcon sx={{ color: red[500] }} />}
+				{!loading && failed && (
+					<CancelIcon
+						sx={{
+							color: red[500],
+							width: '1.4rem',
+							height: '1.4rem',
+						}}
+					/>
+				)}
 				{!loading && !failed && (
 					<CheckIcon
 						sx={{
 							bgcolor: green[500],
 							color: 'white',
 							borderRadius: '50%',
-							width: '1rem',
-							height: '1rem',
+							width: '1.1rem',
+							height: '1.1rem',
 							paddingTop: '1px',
 						}}
 					/>
