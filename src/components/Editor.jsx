@@ -15,7 +15,6 @@ import Dialog from '@mui/material/Dialog';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Typography from '@mui/material/Typography';
 
-
 import Stack from '@mui/material/Stack';
 
 function DeleteDialog(props) {
@@ -41,7 +40,7 @@ function DeleteDialog(props) {
 					flexWrap: 'wrap',
 				}}
 			>
-				<DeleteIcon/>
+				<DeleteIcon />
 				Are you sure?
 			</DialogTitle>
 
@@ -53,17 +52,21 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(1)}
 					key={1}
-					style={{ background: 'aquamarine', margin: 'auto'}}
+					style={{ background: 'aquamarine', margin: 'auto' }}
 				>
-					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">Yes</Typography>
+					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
+						Yes
+					</Typography>
 				</ListItemText>
 				<ListItemText
 					button
 					onClick={() => handleListItemClick(0)}
 					key={0}
-					style={{ background: 'white', margin: 'auto'}}
+					style={{ background: 'white', margin: 'auto' }}
 				>
-					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">No</Typography>
+					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
+						No
+					</Typography>
 				</ListItemText>
 			</Stack>
 		</Dialog>
@@ -115,7 +118,14 @@ const Editor = ({
 	return (
 		<div style={{ width: '100%' }}>
 			<Accordion inputFocused={inputFocused} question={text}>
-				<Grid container alignItems={'center'} justifyContent={'center'}>
+				<Grid
+					container
+					// spacing={2}
+					sx={{
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
 					<Grid item xs={10}>
 						<TextareaAutosize
 							type="text"

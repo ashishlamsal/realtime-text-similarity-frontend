@@ -1,92 +1,64 @@
-import { Typography, Container as MuiContainer, Box } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import React, { useState } from 'react';
-import Editor from './components/Editor';
-import TopBar from './components/TopBar';
+import React from 'react';
+import Layout from './components/Layout';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { amber, grey, blueGrey } from '@mui/material/colors';
 
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
-import { Container, Draggable } from 'react-smooth-dnd';
-import { arrayMoveImmutable, arrayMoveMutable } from 'array-move';
-
-import { List, ListItem } from '@mui/material';
+const getDesignTokens = (mode) => ({
+	palette: {
+		mode,
+		...(mode === 'light'
+			? {
+					// palette values for light mode
+					primary: amber,
+					divider: amber[200],
+					background: {
+						default: grey[100],
+						paper: grey[100],
+					},
+					text: {
+						primary: grey[900],
+						secondary: grey[800],
+					},
+			  }
+			: {
+					// palette values for dark mode
+					primary: blueGrey,
+					divider: blueGrey[700],
+					background: {
+						default: blueGrey[900],
+						paper: blueGrey[900],
+					},
+					text: {
+						primary: '#fff',
+						secondary: grey[500],
+					},
+			  }),
+	},
+});
 
 function App() {
-	const [questions, setQuestions] = useState(['']);
-	const [newBlockPos, setNewBlockPos] = useState(-1);
+	const [mode, setMode] = React.useState('light');
+	const colorMode = React.useMemo(
+		() => ({
+			// The dark mode switch would invoke this method
+			toggleColorMode: () => {
+				setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+			},
+		}),
+		[]
+	);
 
-	const changeQuestionAt = (index, newQuestion) => {
-		let copy = [...questions];
-		copy[index] = newQuestion;
-		setQuestions(copy);
-	};
-
-	const addQuestionAt = (index, newQuestion) => {
-		let old = [...questions];
-		old.splice(index, 0, newQuestion);
-		setQuestions(old);
-	};
-
-	const deleteAt = (index) => {
-		let old = [...questions];
-		old.splice(index, 1);
-		if (old.length == 0) {
-			old.push('');
-		}
-		setQuestions(old);
-	};
-
-	const onDrop = ({ removedIndex, addedIndex }) => {
-		const new_ = arrayMoveImmutable(questions, removedIndex, addedIndex);
-		setQuestions(new_);
-	};
+	// Update the theme only if the mode changes
+	const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
 	return (
-		<React.Fragment>
-			<CssBaseline enableColorScheme />
-			<MuiContainer sx={{ minHeight: '100vh' }} maxWidth="md" disableGutters>
-				<Box
-					style={{
-						backgroundColor: '#ebebeb',
-						minHeight: '100vh',
-					}}
-				>
-					<Typography
-						variant="h4"
-						component="h1"
-						sx={{ textAlign: 'center', py: 3 }}
-					>
-						Realtime Text Similarity Identification
-					</Typography>
-
-					<TopBar questions={questions} setQuestions={setQuestions} />
-
-					<List>
-						<Container
-							dragHandleSelector=".drag-handle"
-							lockAxis="y"
-							onDrop={onDrop}
-						>
-							{questions &&
-								questions.map((item, index) => (
-									<Draggable key={index}>
-										<ListItem>
-											<Editor
-												text={item}
-												changeAt={changeQuestionAt}
-												index={index}
-												addAt={addQuestionAt}
-												newBlockPos={newBlockPos}
-												setNewBlockPos={setNewBlockPos}
-												deleteAt={deleteAt}
-											/>
-										</ListItem>
-									</Draggable>
-								))}
-						</Container>
-					</List>
-				</Box>
-			</MuiContainer>
-		</React.Fragment>
+		<ColorModeContext.Provider value={colorMode}>
+			<ThemeProvider theme={theme}>
+				<Layout context={ColorModeContext} />
+			</ThemeProvider>
+		</ColorModeContext.Provider>
 	);
 }
 
