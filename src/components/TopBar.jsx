@@ -28,7 +28,6 @@ function SubjectSelection(props) {
 	useEffect(() => {handleAlgoSwitch(selectedSubject)}, [])
 
 	const handleAlgoSwitch = (value) => {
-		// request to the server here
 		setLoading(true);
 		onClose(value);
 
@@ -94,10 +93,10 @@ function TopBar({ questions, setQuestions }) {
 	};
 	return (
 		<Grid container spacing={2} sx={{ margin: '5px' }}>
-			<Grid item style={{ textAlign: 'center' }}>
+			<Grid item style={{ textAlign: 'center', cursor: 'pointer' }}>
 				<NewIcon onClick={newQuestionSet} />
 			</Grid>
-			<Grid item style={{ textAlign: 'center' }}>
+			<Grid item style={{ textAlign: 'center', cursor: 'pointer' }}>
 				<SaveIcon onClick={saveQuestions} />
 			</Grid>
 

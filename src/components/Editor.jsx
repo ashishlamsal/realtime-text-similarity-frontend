@@ -15,6 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Typography from '@mui/material/Typography';
 
+import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 
 function DeleteDialog(props) {
@@ -52,20 +53,20 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(1)}
 					key={1}
-					style={{ background: 'aquamarine', margin: 'auto' }}
+					style={{ background: red[500], margin: 'auto', cursor: 'pointer' }}
 				>
 					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
-						Yes
+						Confirm
 					</Typography>
 				</ListItemText>
 				<ListItemText
 					button
 					onClick={() => handleListItemClick(0)}
 					key={0}
-					style={{ background: 'white', margin: 'auto' }}
+					style={{ margin: 'auto', cursor: 'pointer' }}
 				>
 					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
-						No
+						Cancel
 					</Typography>
 				</ListItemText>
 			</Stack>
@@ -120,7 +121,7 @@ const Editor = ({
 			<Accordion inputFocused={inputFocused} question={text}>
 				<Grid
 					container
-					// spacing={2}
+
 					sx={{
 						alignItems: 'center',
 						justifyContent: 'center',
@@ -142,11 +143,11 @@ const Editor = ({
 					</Grid>
 					<Grid item xs={1}>
 						<ListItemIcon className="drag-handle">
-							<DragHandleIcon />
+							<DragHandleIcon onClick={() => setOpen(false)}/>
 						</ListItemIcon>
 					</Grid>
 					<Grid item xs={1}>
-						<ListItemIcon className="drag-handle">
+						<ListItemIcon >
 							{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
 							<DeleteRounded onClick={handleClickOpen} />
 						</ListItemIcon>
