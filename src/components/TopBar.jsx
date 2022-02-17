@@ -13,14 +13,19 @@ import Typography from '@mui/material/Typography';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import CheckIcon from '@mui/icons-material/Check';
 
+import CancelIcon from '@mui/icons-material/Cancel';
+
 function SubjectSelection(props) {
-	const { onClose, selectedSubject, open, setLoading } = props;
+	const { onClose, selectedSubject, open, setLoading, setFailed } = props;
 	const algorithms = ['WORD_2_VEC', 'BERT', 'ARORA', 'USE'];
 	const handleClose = () => {
 		onClose(selectedSubject);
 	};
+
+	useEffect(() => {handleAlgoSwitch(selectedSubject)}, [])
 
 	const handleAlgoSwitch = (value) => {
 		// request to the server here
@@ -30,10 +35,15 @@ function SubjectSelection(props) {
 		fetch(`http://127.0.0.1:5000/?algo=${value}`)
 			.then((response) => {
 				setLoading(false);
+				setFailed(false);
 				response.json();
 			})
 			.then((data) => {
 				console.log(data);
+			}).catch((err)=>{
+				console.log('error', err);
+				setFailed(true);
+				setLoading(false);
 			});
 	};
 
@@ -53,9 +63,13 @@ function SubjectSelection(props) {
 
 function TopBar({ questions, setQuestions }) {
 	const [open, setOpen] = useState(false);
-	const [selectedSubject, setSelectedSubject] = useState('word2vec');
+	const [selectedSubject, setSelectedSubject] = useState('USE');
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [failed, setFailed] = useState(false);
+
+	
+
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -87,27 +101,29 @@ function TopBar({ questions, setQuestions }) {
 				<SaveIcon onClick={saveQuestions} />
 			</Grid>
 
-			<Grid item style={{ textAlign: 'center' }}>
+			<Grid item style={{ textAlign: 'center', cursor: 'pointer' }}>
 				<LibraryBooksIcon onClick={handleClickOpen} />
 				<SubjectSelection
 					selectedSubject={selectedSubject}
 					open={open}
 					onClose={handleClose}
 					setLoading={setLoading}
+					setFailed={setFailed}
 				/>
 			</Grid>
 
 			<Grid item style={{ textAlign: 'center', display: 'flex' }}>
-				<Typography sx={{ marginRight: '5px' }}>{selectedSubject}</Typography>
+				<Typography sx={{ marginRight: '5px', cursor: 'pointer' }} onClick={handleClickOpen}>{selectedSubject}</Typography>
 				{loading && <CircularProgress size={20} />}
-				{!loading && (
+				{(!loading && failed) && <CancelIcon sx={{color: red[500]}}/>}
+				{(!loading && !failed) && (
 					<CheckIcon
 						sx={{
 							bgcolor: green[500],
 							color: 'white',
 							borderRadius: '50%',
-							width: '1rem',
-							height: '1rem',
+							width: '1.1rem',
+							height: '1.1rem',
 							marginTop: '3px',
 							paddingTop: '1px',
 						}}
