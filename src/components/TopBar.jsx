@@ -14,10 +14,13 @@ import Typography from '@mui/material/Typography';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import CheckIcon from '@mui/icons-material/Check';
 
+import CancelIcon from '@mui/icons-material/Cancel';
+
 function SubjectSelection(props) {
-	const { onClose, selectedSubject, open, setLoading } = props;
+	const { onClose, selectedSubject, open, setLoading, setFailed } = props;
 	const algorithms = [
 		'Word2Vec',
 		'BERT',
@@ -28,18 +31,27 @@ function SubjectSelection(props) {
 		onClose(selectedSubject);
 	};
 
+	useEffect(() => {
+		handleAlgoSwitch(selectedSubject);
+	}, []);
+
 	const handleAlgoSwitch = (value) => {
-		// request to the server here
 		setLoading(true);
 		onClose(value);
 
 		fetch(`http://127.0.0.1:5000/?algo=${value}`)
 			.then((response) => {
 				setLoading(false);
+				setFailed(false);
 				response.json();
 			})
 			.then((data) => {
 				console.log(data);
+			})
+			.catch((err) => {
+				console.log('error', err);
+				setFailed(true);
+				setLoading(false);
 			});
 	};
 
@@ -60,8 +72,8 @@ function SubjectSelection(props) {
 function TopBar({ questions, setQuestions }) {
 	const [open, setOpen] = useState(false);
 	const [selectedSubject, setSelectedSubject] = useState('Word2Vec');
-
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [failed, setFailed] = useState(false);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -112,15 +124,16 @@ function TopBar({ questions, setQuestions }) {
 					open={open}
 					selectedSubject={selectedSubject}
 					setLoading={setLoading}
+					setFailed={setFailed}
 				/>
 			</Grid>
 			<Grid item sx={{ display: 'flex', alignItems: 'baseline' }}>
 				<Typography variant="h6" sx={{ marginRight: '5px' }}>
 					{selectedSubject}
 				</Typography>
-				{loading ? (
-					<CircularProgress size={20} sx={{ color: green[500] }} />
-				) : (
+				{loading && <CircularProgress size={20} sx={{ color: green[500] }} />}
+				{!loading && failed && <CancelIcon sx={{ color: red[500] }} />}
+				{!loading && !failed && (
 					<CheckIcon
 						sx={{
 							bgcolor: green[500],
