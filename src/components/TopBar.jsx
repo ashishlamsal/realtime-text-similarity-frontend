@@ -108,7 +108,8 @@ function TopBar({ questions, setQuestions }) {
 							borderRadius: '50%',
 							width: '1rem',
 							height: '1rem',
-							marginTop: '4px',
+							marginTop: '3px',
+							paddingTop: '1px',
 						}}
 					/>
 				)}
