@@ -17,22 +17,17 @@ import CheckIcon from '@mui/icons-material/Check';
 
 function SubjectSelection(props) {
 	const { onClose, selectedSubject, open, setLoading } = props;
-	const algorithms = [
-		'word2vec',
-		'BERT',
-		'Arora',
-		'Universal Sentence Encoder',
-	];
+	const algorithms = ['WORD_2_VEC', 'BERT', 'ARORA', 'USE'];
 	const handleClose = () => {
 		onClose(selectedSubject);
 	};
 
-	const handleListItemClick = (value) => {
+	const handleAlgoSwitch = (value) => {
 		// request to the server here
 		setLoading(true);
 		onClose(value);
 
-		fetch('http://127.0.0.1:5000')
+		fetch(`http://127.0.0.1:5000/?algo=${value}`)
 			.then((response) => {
 				setLoading(false);
 				response.json();
@@ -47,11 +42,7 @@ function SubjectSelection(props) {
 			<DialogTitle>Select Algorithm</DialogTitle>
 			<List sx={{ pt: 0 }}>
 				{algorithms.map((index) => (
-					<ListItem
-						button
-						onClick={() => handleListItemClick(index)}
-						key={index}
-					>
+					<ListItem button onClick={() => handleAlgoSwitch(index)} key={index}>
 						<ListItemText primary={index} />
 					</ListItem>
 				))}
@@ -88,8 +79,8 @@ function TopBar({ questions, setQuestions }) {
 		setQuestions(['']);
 	};
 	return (
-		<Grid container spacing={2} sx={{margin: "5px"}}>
-			<Grid item style={{ textAlign: 'center',  }}>
+		<Grid container spacing={2} sx={{ margin: '5px' }}>
+			<Grid item style={{ textAlign: 'center' }}>
 				<NewIcon onClick={newQuestionSet} />
 			</Grid>
 			<Grid item style={{ textAlign: 'center' }}>
@@ -108,11 +99,7 @@ function TopBar({ questions, setQuestions }) {
 
 			<Grid item style={{ textAlign: 'center', display: 'flex' }}>
 				<Typography sx={{ marginRight: '5px' }}>{selectedSubject}</Typography>
-				{loading && (
-					<CircularProgress
-					size={20}
-					/>
-				)}
+				{loading && <CircularProgress size={20} />}
 				{!loading && (
 					<CheckIcon
 						sx={{
@@ -121,7 +108,7 @@ function TopBar({ questions, setQuestions }) {
 							borderRadius: '50%',
 							width: '1rem',
 							height: '1rem',
-							marginTop: '4px'
+							marginTop: '4px',
 						}}
 					/>
 				)}
