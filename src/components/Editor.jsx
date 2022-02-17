@@ -6,8 +6,6 @@ import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import SimpleAccordion from './predictionList';
-import { blue } from '@mui/material/colors';
-// import { Box, flexbox } from '@mui/system';
 
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,7 +13,7 @@ import Dialog from '@mui/material/Dialog';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Typography from '@mui/material/Typography';
 
-import { red } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 
 function DeleteDialog(props) {
@@ -56,17 +54,17 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(1)}
 					key={1}
-					style={{ background: red[300], margin: 'auto', cursor: 'pointer' }}
+					style={{ background: red[300],margin:"15px 10px 15px 15px", borderRadius:"4px", cursor: 'pointer' }}
 				>
 					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
-						Confirm
+						Delete
 					</Typography>
 				</ListItemText>
 				<ListItemText
 					button
 					onClick={() => handleListItemClick(0)}
 					key={0}
-					style={{ background: blue[300], margin: 'auto', cursor: 'pointer' }}
+					style={{ background: grey[500], margin:"15px 15px 15px 10px", borderRadius:"4px", cursor: 'pointer' }}
 				>
 					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
 						Cancel
@@ -131,6 +129,7 @@ const Editor = ({
 				>
 					<Grid item xs={10}>
 						<TextareaAutosize
+						style = {{lineHeight: "inherit"}}
 							type="text"
 							onKeyDown={handleKeyDown}
 							onFocus={() => setInputFocused(true)}

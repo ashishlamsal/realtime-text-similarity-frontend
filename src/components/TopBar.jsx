@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
-import NewIcon from '@mui/icons-material/Add';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Grid from '@mui/material/Grid';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import IconButton from '@mui/material/IconButton';
@@ -14,17 +14,19 @@ import Typography from '@mui/material/Typography';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import { red } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 import CheckIcon from '@mui/icons-material/Check';
 
 import CancelIcon from '@mui/icons-material/Cancel';
 
+import Stack from '@mui/material/Stack';
+
 function SubjectSelection(props) {
 	const { onClose, selectedSubject, open, setLoading, setFailed } = props;
 	const algorithms = {
-		'Word2Vec': 'WORD_2_VEC',
-		'BERT': 'BERT',
-		'Arora': 'ARORA',
+		Word2Vec: 'WORD_2_VEC',
+		BERT: 'BERT',
+		Arora: 'ARORA',
 		'Universal Sentence Encoder': 'USE',
 	};
 
@@ -37,11 +39,10 @@ function SubjectSelection(props) {
 	}, []);
 
 	const handleAlgoSwitch = (value) => {
-		
 		setLoading(true);
 		onClose(value);
 
-		fetch(`http://127.0.0.1:5001/?algo=${algorithms[value]}`)
+		fetch(`http://127.0.0.1:5000/?algo=${algorithms[value]}`)
 			.then((response) => {
 				setLoading(false);
 				setFailed(false);
@@ -67,6 +68,128 @@ function SubjectSelection(props) {
 					</ListItem>
 				))}
 			</List>
+		</Dialog>
+	);
+}
+
+function NewDialog({ onClose, newQuestionSet, open }) {
+	return (
+		<Dialog onClose={onClose} open={open}>
+			<DialogTitle
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					flexWrap: 'wrap',
+					justifyContent: 'center',
+				}}
+			>
+				<InsertDriveFileIcon />
+				<Typography variant="h6" sx={{ marginLeft: '5px' }}>
+					Start a new question set?
+				</Typography>
+			</DialogTitle>
+
+			<Typography p={2}>
+				The current question set will be downloaded.
+			</Typography>
+			<Stack direction="row">
+				<ListItemText
+					button
+					onClick={() => {
+						newQuestionSet();
+						onClose();
+					}}
+					key={1}
+					style={{
+						background: green[300],
+						margin: '15px 10px 15px 15px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
+						Confirm
+					</Typography>
+				</ListItemText>
+				<ListItemText
+					button
+					onClick={() => {
+						onClose();
+					}}
+					key={0}
+					style={{
+						background: grey[500],
+						margin: '15px 15px 15px 10px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
+						Cancel
+					</Typography>
+				</ListItemText>
+			</Stack>
+		</Dialog>
+	);
+}
+
+function SaveDialog({ onClose, newQuestionSet, open }) {
+	return (
+		<Dialog onClose={onClose} open={open}>
+			<DialogTitle
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					flexWrap: 'wrap',
+					justifyContent: 'center',
+				}}
+			>
+				<SaveIcon />
+				<Typography variant="h6" sx={{ marginLeft: '5px' }}>
+					Save this question set?
+				</Typography>
+			</DialogTitle>
+
+			<Typography p={2}>
+				The current question set will be downloaded.
+			</Typography>
+			<Stack direction="row">
+				<ListItemText
+					button
+					onClick={() => {
+						newQuestionSet();
+						onClose();
+					}}
+					key={1}
+					style={{
+						background: green[300],
+						margin: '15px 10px 15px 15px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
+						Confirm
+					</Typography>
+				</ListItemText>
+				<ListItemText
+					button
+					onClick={() => {
+						onClose();
+					}}
+					key={0}
+					style={{
+						background: grey[500],
+						margin: '15px 15px 15px 10px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
+				>
+					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
+						Cancel
+					</Typography>
+				</ListItemText>
+			</Stack>
 		</Dialog>
 	);
 }
@@ -98,6 +221,17 @@ function TopBar({ questions, setQuestions }) {
 		saveQuestions();
 		setQuestions(['']);
 	};
+
+	const [openNewDialog, setOpenNewDialog] = useState(false);
+	const handleCloseNewDialog = () => {
+		setOpenNewDialog(false);
+	};
+
+	const [openSaveDialog, setOpenSaveDialog] = useState(false);
+	const handleCloseSaveDialog = () => {
+		setOpenSaveDialog(false);
+	};
+
 	return (
 		<Grid
 			container
@@ -110,12 +244,32 @@ function TopBar({ questions, setQuestions }) {
 			}}
 		>
 			<Grid item>
-				<IconButton onClick={newQuestionSet} color="inherit">
-					<NewIcon />
+				<IconButton
+					onClick={() => {
+						setOpenNewDialog(true);
+					}}
+					color="inherit"
+				>
+					<InsertDriveFileIcon />
 				</IconButton>
-				<IconButton onClick={saveQuestions} color="inherit">
+				<NewDialog
+					newQuestionSet={newQuestionSet}
+					open={openNewDialog}
+					onClose={handleCloseNewDialog}
+				/>
+				<IconButton
+					onClick={() => {
+						setOpenSaveDialog(true);
+					}}
+					color="inherit"
+				>
 					<SaveIcon />
 				</IconButton>
+				<SaveDialog
+					newQuestionSet={saveQuestions}
+					open={openSaveDialog}
+					onClose={handleCloseSaveDialog}
+				/>
 			</Grid>
 			<Grid item>
 				<IconButton onClick={handleClickOpen} color="inherit">
@@ -150,7 +304,7 @@ function TopBar({ questions, setQuestions }) {
 							color: red[500],
 							width: '1.2rem',
 							height: '1.2rem',
-							marginBottom: '3px'
+							marginBottom: '3px',
 						}}
 					/>
 				)}

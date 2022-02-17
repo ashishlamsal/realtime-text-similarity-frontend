@@ -66,7 +66,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 		})
 			.then((res) => res.json())
 			.then((sim) => {
-				console.log(sim);
+				// console.log(sim);
 				setQuestions(sim);
 			})
 			.catch((err) => {
@@ -113,14 +113,14 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 								{questions.map((key, index) => {
 									return (
 										<ListItem key={index} disablePadding>
-											<ListItemButton>
+											<ListItemButton sx={{paddingBottom: "1px", mb:"0"}}>
 												<ListItemIcon>
-													<Typography variant="button" display="block">
+													<Typography sx={{ marginBottom:"0", lineHeight: "inherit" }} variant="button" display="block">
 														{index + 1}
 													</Typography>
 												</ListItemIcon>
-												<ListItemText>
-													<Typography variant="subtitle2" gutterBottom>
+												<ListItemText >
+													<Typography sx={{ marginBottom:"0", lineHeight: "inherit" }} variant="subtitle2" gutterBottom>
 														{key}
 													</Typography>
 												</ListItemText>

@@ -26,7 +26,7 @@ export default function NavBar({ colorMode, theme }) {
 					</Typography>
 
 					<IconButton
-						href="https://www.github.com"
+						href="https://github.com/ashishlamsal/realtime-text-similarity-frontend"
 						target="_blank"
 						size="medium"
 						color="inherit"
