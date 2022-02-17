@@ -43,6 +43,11 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 export default function SimpleAccordion({ inputFocused, children, question }) {
 	const [expand, setExpand] = React.useState(false);
@@ -73,7 +78,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 
 	return (
 		<div style={{ width: '100%' }}>
-			<Accordion expanded={inputFocused || expand}>
+			<Accordion expanded={inputFocused || expand} disableGutters>
 				{/* {propes.children} */}
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon onClick={handleToggle} />}
@@ -85,17 +90,46 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 				</AccordionSummary>
 				{question && question.length > 10 && (
 					<AccordionDetails>
-						<div>
-							{question && question.length <= 20 && (
-								// <Card text={'Matching similarity...'} />
-								<Typography>Matching similarity...</Typography>
-							)}
-							{question &&
-								question.length > 20 &&
-								questions.map((key, index) => {
-									return <Typography key={index}>{key}</Typography>;
+						{question && question.length <= 20 && (
+							<Typography
+								variant="overline"
+								component="div"
+								gutterBottom
+								sx={{ fontWeight: 'bold', lineHeight: 'normal', pt: '2' }}
+							>
+								Matching similarity...
+							</Typography>
+						)}
+						{question && question.length > 20 && (
+							<List>
+								<Typography
+									variant="overline"
+									component="div"
+									gutterBottom
+									sx={{ fontWeight: 'bold', lineHeight: 'normal' }}
+								>
+									Similar Questions
+								</Typography>
+								{questions.map((key, index) => {
+									return (
+										<ListItem key={index} disablePadding>
+											<ListItemButton>
+												<ListItemIcon>
+													<Typography variant="button" display="block">
+														{index + 1}
+													</Typography>
+												</ListItemIcon>
+												<ListItemText>
+													<Typography variant="subtitle2" gutterBottom>
+														{key}
+													</Typography>
+												</ListItemText>
+											</ListItemButton>
+										</ListItem>
+									);
 								})}
-						</div>
+							</List>
+						)}
 					</AccordionDetails>
 				)}
 			</Accordion>

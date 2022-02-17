@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import './styles.scss';
 import PredictionList from './predictionList';
 import TextareaAutosize from 'react-textarea-autosize';
-
 import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
-import Accordion from './predictionList';
+import SimpleAccordion from './predictionList';
+import { red } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 // import { Box, flexbox } from '@mui/system';
 
 import ListItemText from '@mui/material/ListItemText';
@@ -38,10 +39,13 @@ function DeleteDialog(props) {
 					display: 'flex',
 					alignItems: 'center',
 					flexWrap: 'wrap',
+					justifyContent: 'center',
 				}}
 			>
 				<DeleteIcon />
-				Are you sure?
+				<Typography variant="h6" sx={{ marginLeft: '5px' }}>
+					Are you sure?
+				</Typography>
 			</DialogTitle>
 
 			<Typography p={2}>
@@ -52,7 +56,7 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(1)}
 					key={1}
-					style={{ background: 'aquamarine', margin: 'auto' }}
+					style={{ background: red[300], margin: 'auto' }}
 				>
 					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
 						Yes
@@ -62,7 +66,7 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(0)}
 					key={0}
-					style={{ background: 'white', margin: 'auto' }}
+					style={{ background: blue[300], margin: 'auto' }}
 				>
 					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
 						No
@@ -117,7 +121,7 @@ const Editor = ({
 	};
 	return (
 		<div style={{ width: '100%' }}>
-			<Accordion inputFocused={inputFocused} question={text}>
+			<SimpleAccordion inputFocused={inputFocused} question={text}>
 				<Grid
 					container
 					// spacing={2}
@@ -158,7 +162,7 @@ const Editor = ({
 						onClose={handleClose}
 					/>
 				</Grid>
-			</Accordion>
+			</SimpleAccordion>
 		</div>
 	);
 };
