@@ -21,32 +21,41 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import Stack from '@mui/material/Stack';
 
-function SubjectSelection(props) {
-	const { onClose, selectedSubject, open, setLoading, setFailed } = props;
+import Notification from './snackbar';
+
+function SubjectSelection({
+	setSelectedAlgo,
+	selectedAlgo,
+	dialogOpen,
+	setDialogOpen,
+	setLoading,
+	setFailed,
+	handleToaster,
+}) {
 	const algorithms = {
-		Word2Vec: 'WORD_2_VEC',
+		TFIDF_word2vec: 'WORD_2_VEC',
 		BERT: 'BERT',
-		Arora: 'ARORA',
+		'Smooth inverse frequency': 'ARORA',
 		'Universal Sentence Encoder': 'USE',
 	};
 
-	const handleClose = () => {
-		onClose(selectedSubject);
-	};
-
 	useEffect(() => {
-		handleAlgoSwitch(selectedSubject);
+		handleAlgoSwitch(selectedAlgo);
 	}, []);
 
-	const handleAlgoSwitch = (value) => {
+	const handleAlgoSwitch = (new_algo) => {
 		setLoading(true);
-		onClose(value);
+		let prev_algo = selectedAlgo;
+		// onClose(value);
+		setSelectedAlgo(new_algo);
 
-		fetch(`http://127.0.0.1:5000/?algo=${algorithms[value]}`)
+		fetch(`http://127.0.0.1:5000/?algo=${algorithms[selectedAlgo]}`)
 			.then((response) => {
 				setLoading(false);
 				setFailed(false);
+				setDialogOpen(false);
 				response.json();
+				handleToaster('success', 'Successfully switched algorithm');
 			})
 			.then((data) => {
 				console.log(data);
@@ -55,11 +64,14 @@ function SubjectSelection(props) {
 				console.log('error', err);
 				setFailed(true);
 				setLoading(false);
+				setSelectedAlgo(prev_algo);
+				setDialogOpen(false);
+				handleToaster('error', 'Failed to switch algorithm');
 			});
 	};
 
 	return (
-		<Dialog onClose={handleClose} open={open}>
+		<Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
 			<DialogTitle>Select Algorithm</DialogTitle>
 			<List sx={{ pt: 0 }}>
 				{Object.keys(algorithms).map((index) => (
@@ -195,19 +207,22 @@ function SaveDialog({ onClose, newQuestionSet, open }) {
 }
 
 function TopBar({ questions, setQuestions }) {
-	const [open, setOpen] = useState(false);
-	const [selectedSubject, setSelectedSubject] = useState('Word2Vec');
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const [selectedAlgo, setSelectedAlgo] = useState(
+		'Universal Sentence Encoder'
+	);
+	const [toasterOpen, setToasterOpen] = useState(false);
+	const [toasterIntent, setToasterIntent] = useState('success');
+	const [toasterMessage, setToasterMessage] = useState('');
+
+	const handleToaster = (intent, message) => {
+		setToasterIntent(intent);
+		setToasterMessage(message);
+		setToasterOpen(true);
+	};
+
 	const [loading, setLoading] = useState(true);
 	const [failed, setFailed] = useState(false);
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = (value) => {
-		setOpen(false);
-		setSelectedSubject(value);
-	};
 
 	const saveQuestions = () => {
 		var a = document.createElement('a');
@@ -223,14 +238,7 @@ function TopBar({ questions, setQuestions }) {
 	};
 
 	const [openNewDialog, setOpenNewDialog] = useState(false);
-	const handleCloseNewDialog = () => {
-		setOpenNewDialog(false);
-	};
-
 	const [openSaveDialog, setOpenSaveDialog] = useState(false);
-	const handleCloseSaveDialog = () => {
-		setOpenSaveDialog(false);
-	};
 
 	return (
 		<Grid
@@ -255,7 +263,7 @@ function TopBar({ questions, setQuestions }) {
 				<NewDialog
 					newQuestionSet={newQuestionSet}
 					open={openNewDialog}
-					onClose={handleCloseNewDialog}
+					onClose={() => setOpenNewDialog(false)}
 				/>
 				<IconButton
 					onClick={() => {
@@ -268,24 +276,26 @@ function TopBar({ questions, setQuestions }) {
 				<SaveDialog
 					newQuestionSet={saveQuestions}
 					open={openSaveDialog}
-					onClose={handleCloseSaveDialog}
+					onClose={() => setOpenSaveDialog(false)}
 				/>
 			</Grid>
 			<Grid item>
-				<IconButton onClick={handleClickOpen} color="inherit">
+				<IconButton onClick={() => setDialogOpen(true)} color="inherit">
 					<LibraryBooksIcon />
 				</IconButton>
 				<SubjectSelection
-					onClose={handleClose}
-					open={open}
-					selectedSubject={selectedSubject}
+					dialogOpen={dialogOpen}
+					setDialogOpen={setDialogOpen}
+					selectedAlgo={selectedAlgo}
+					setSelectedAlgo={setSelectedAlgo}
 					setLoading={setLoading}
 					setFailed={setFailed}
+					handleToaster={handleToaster}
 				/>
 			</Grid>
 			<Grid item sx={{ display: 'flex', alignItems: 'center' }}>
 				<Typography variant="h6" sx={{ marginRight: '5px' }}>
-					{selectedSubject}
+					{selectedAlgo}
 				</Typography>
 				{loading && (
 					<CircularProgress
@@ -320,6 +330,12 @@ function TopBar({ questions, setQuestions }) {
 						}}
 					/>
 				)}
+				<Notification
+					intent={toasterIntent}
+					message={toasterMessage}
+					open={toasterOpen}
+					setOpen={setToasterOpen}
+				/>
 			</Grid>
 		</Grid>
 	);
