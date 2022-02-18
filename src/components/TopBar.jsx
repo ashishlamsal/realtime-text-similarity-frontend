@@ -49,7 +49,7 @@ function SubjectSelection({
 		// onClose(value);
 		setSelectedAlgo(new_algo);
 
-		fetch(`http://127.0.0.1:5000/?algo=${algorithms[selectedAlgo]}`)
+		fetch(`http://127.0.0.1:5000/?algo=${algorithms[new_algo]}`)
 			.then((response) => {
 				setLoading(false);
 				setFailed(false);
