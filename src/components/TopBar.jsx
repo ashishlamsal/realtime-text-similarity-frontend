@@ -48,14 +48,14 @@ function SubjectSelection({
 		let prev_algo = selectedAlgo;
 		// onClose(value);
 		setSelectedAlgo(new_algo);
+		setDialogOpen(false);
 
 		fetch(`http://127.0.0.1:5000/?algo=${algorithms[new_algo]}`)
 			.then((response) => {
 				setLoading(false);
 				setFailed(false);
-				setDialogOpen(false);
-				response.json();
 				handleToaster('success', 'Successfully switched algorithm');
+				response.json();
 			})
 			.then((data) => {
 				console.log(data);
