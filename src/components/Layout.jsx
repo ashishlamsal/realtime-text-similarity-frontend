@@ -1,4 +1,4 @@
-import { Typography, Container as MuiContainer, Box } from '@mui/material';
+import { Container as MuiContainer } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import React, { useState } from 'react';
 import Editor from './Editor';
@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 
 import { Container, Draggable } from 'react-smooth-dnd';
-import { arrayMoveImmutable, arrayMoveMutable } from 'array-move';
+import { arrayMoveImmutable } from 'array-move';
 
 import { List, ListItem } from '@mui/material';
 
@@ -33,7 +33,7 @@ function Layout({ context }) {
 	const deleteAt = (index) => {
 		let old = [...questions];
 		old.splice(index, 1);
-		if (old.length == 0) {
+		if (old.length === 0) {
 			old.push('');
 		}
 		setQuestions(old);

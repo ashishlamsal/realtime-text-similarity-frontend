@@ -23,6 +23,8 @@ import Stack from '@mui/material/Stack';
 
 import Notification from './snackbar';
 
+import latex_template from '../template_latex.js';
+
 function SubjectSelection({
 	setSelectedAlgo,
 	selectedAlgo,
@@ -225,11 +227,29 @@ function TopBar({ questions, setQuestions }) {
 	const [failed, setFailed] = useState(false);
 
 	const saveQuestions = () => {
+		console.log(questions);
+		let quesstring = '';
+		for (const key in questions) {
+			console.log(`${key}: ${questions[key]}`);
+			quesstring += '\n \\item ' + questions[key];
+		}
+		const final = latex_template.replace('%%questions', quesstring);
+		console.log(latex_template);
+		console.log(quesstring);
+		console.log(final);
+
 		var a = document.createElement('a');
-		var file = new Blob([JSON.stringify(questions)], { type: 'text/plain' });
+		var file = new Blob([final], { type: 'text/plain' });
 		a.href = URL.createObjectURL(file);
-		a.download = 'questions.json';
+		a.download = 'questions.tex';
 		a.click();
+
+		// var file= new BLOB(final,{type: 'text/plain'});
+		// var a = document.createElement('a');
+		// var file = new Blob([JSON.stringify(questions)], { type: 'text/plain' });
+		// a.href = URL.createObjectURL(file);
+		// a.download = 'questions.json';
+		// a.click();
 	};
 
 	const newQuestionSet = () => {
