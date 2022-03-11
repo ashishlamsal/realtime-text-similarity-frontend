@@ -17,6 +17,8 @@ function Layout({ context }) {
 	const colorMode = React.useContext(context);
 	const [questions, setQuestions] = useState(['']);
 	const [newBlockPos, setNewBlockPos] = useState(-1);
+	const [uploadSuccess, setUploadSuccess] = useState(false);
+	const [uploadFailed, setUploadFailed] = useState(false);
 
 	const changeQuestionAt = (index, newQuestion) => {
 		let copy = [...questions];
@@ -44,10 +46,41 @@ function Layout({ context }) {
 		setQuestions(new_);
 	};
 
+	const handleUploadClick = (e, setUploading) => {
+		e.preventDefault();
+		let file = e.target.files[0];
+		console.log(file);
+
+		const formData = new FormData();
+
+		formData.append('file', file);
+		setUploading(true);
+
+		fetch('http://localhost:5000/files', {
+			body: formData,
+			method: 'POST',
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				setUploading(false);
+				setUploadSuccess(!uploadSuccess);
+				console.log(res);
+			})
+			.catch((e) => {
+				console.log('error occured while uploading', e);
+				setUploadFailed(!uploadFailed);
+				setUploading(false);
+			});
+	};
+
 	return (
 		<React.Fragment>
 			<CssBaseline enableColorScheme />
-			<NavBar colorMode={colorMode} theme={theme} />
+			<NavBar
+				colorMode={colorMode}
+				theme={theme}
+				handleUploadClick={handleUploadClick}
+			/>
 			<MuiContainer maxWidth="md">
 				<Paper
 					elevation={1}
@@ -58,7 +91,12 @@ function Layout({ context }) {
 						color: 'text.primary',
 					}}
 				>
-					<TopBar questions={questions} setQuestions={setQuestions} />
+					<TopBar
+						questions={questions}
+						setQuestions={setQuestions}
+						uploadCompleted={uploadSuccess}
+						uploadFailed={uploadFailed}
+					/>
 
 					<List>
 						<Container

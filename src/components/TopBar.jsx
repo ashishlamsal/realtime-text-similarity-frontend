@@ -208,7 +208,7 @@ function SaveDialog({ onClose, newQuestionSet, open }) {
 	);
 }
 
-function TopBar({ questions, setQuestions }) {
+function TopBar({ questions, setQuestions, uploadCompleted, uploadFailed }) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedAlgo, setSelectedAlgo] = useState(
 		'Universal Sentence Encoder'
@@ -225,6 +225,14 @@ function TopBar({ questions, setQuestions }) {
 
 	const [loading, setLoading] = useState(true);
 	const [failed, setFailed] = useState(false);
+
+	useEffect(() => {
+		handleToaster('success', 'Index initialized successfully.');
+	}, [uploadCompleted]);
+
+	useEffect(() => {
+		handleToaster('error', 'Index initialization failed.');
+	}, [uploadFailed]);
 
 	const saveQuestions = () => {
 		console.log(questions);

@@ -8,8 +8,14 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+import { Button, Input } from '@mui/material';
+import { useState } from 'react';
 
-export default function NavBar({ colorMode, theme }) {
+export default function NavBar({ colorMode, theme, handleUploadClick }) {
+	const [uploading, setUploading] = useState(false);
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static" sx={{ background: 'transparent' }}>
@@ -17,6 +23,7 @@ export default function NavBar({ colorMode, theme }) {
 					<IconButton size="medium" color="inherit" aria-label="menu">
 						<DashboardIcon />
 					</IconButton>
+
 					<Typography
 						variant="overline"
 						component="h1"
@@ -24,6 +31,53 @@ export default function NavBar({ colorMode, theme }) {
 					>
 						Realtime Text Similarity Identification
 					</Typography>
+
+					{uploading && (
+						<>
+							<Typography
+								variant="overline"
+								component="h3"
+								sx={{ lineHeight: 'normal', mr: 2 }}
+							>
+								Creating Index...
+							</Typography>
+
+							<CircularProgress
+								size={24}
+								sx={{
+									color: green[500],
+									// position: 'absolute',
+									// top: '50%',
+									// left: '50%',
+									// paddingTop: '50px',
+									// marginTop: '50px',
+									// marginLeft: '-12px',
+									mr: 2,
+								}}
+							/>
+						</>
+					)}
+					<label htmlFor="contained-button-file">
+						<Input
+							accept=".txt, text/plain"
+							id="contained-button-file"
+							multiple
+							type="file"
+							sx={{ display: 'none' }}
+							onChange={(e) => {
+								handleUploadClick(e, setUploading);
+							}}
+						/>
+
+						<Button variant="contained" component="span">
+							Upload
+						</Button>
+					</label>
+
+					{/* <Button variant="contained" onClick={handleUploadClick}>
+						Upload Dataset						
+					</Button> */}
+					{/* <input type="file" onChange={this.uploadFile} /> */}
 
 					<IconButton
 						href="https://github.com/ashishlamsal/realtime-text-similarity-frontend"

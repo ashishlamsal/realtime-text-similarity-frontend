@@ -57,7 +57,7 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 	const [questions, setQuestions] = useState([]);
 	useEffect(() => {
 		let postData = { question: question };
-		fetch('http://127.0.0.1:5000', {
+		fetch('http://localhost:5000', {
 			body: JSON.stringify(postData),
 			headers: {
 				'Content-Type': 'application/json',
@@ -113,14 +113,22 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 								{questions.map((key, index) => {
 									return (
 										<ListItem key={index} disablePadding>
-											<ListItemButton sx={{paddingBottom: "1px", mb:"0"}}>
+											<ListItemButton sx={{ paddingBottom: '1px', mb: '0' }}>
 												<ListItemIcon>
-													<Typography sx={{ marginBottom:"0", lineHeight: "inherit" }} variant="button" display="block">
+													<Typography
+														sx={{ marginBottom: '0', lineHeight: 'inherit' }}
+														variant="button"
+														display="block"
+													>
 														{index + 1}
 													</Typography>
 												</ListItemIcon>
-												<ListItemText >
-													<Typography sx={{ marginBottom:"0", lineHeight: "inherit" }} variant="subtitle2" gutterBottom>
+												<ListItemText>
+													<Typography
+														sx={{ marginBottom: '0', lineHeight: 'inherit' }}
+														variant="subtitle2"
+														gutterBottom
+													>
 														{key}
 													</Typography>
 												</ListItemText>
