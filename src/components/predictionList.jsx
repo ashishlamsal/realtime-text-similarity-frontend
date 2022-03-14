@@ -25,7 +25,11 @@ export default function SimpleAccordion({
 		setExpand(!expand);
 	};
 	const [questions, setQuestions] = useState([]);
+	const timer = setTimeout(() => {}, 0.5);
 	useEffect(() => {
+
+		const delayDebounceFn = setTimeout(() => {
+
 		let postData = { question: question };
 		fetch('http://localhost:5000', {
 			body: JSON.stringify(postData),
@@ -36,7 +40,7 @@ export default function SimpleAccordion({
 		})
 			.then((res) => res.json())
 			.then((sim) => {
-				// console.log(sim);
+				console.log("req");
 				setQuestions(sim);
 			})
 			.catch((err) => {
@@ -44,10 +48,14 @@ export default function SimpleAccordion({
 					'Some error occured while making request to backend': 0,
 				});
 			});
+		
+		}, 200)
+
+		return () => clearTimeout(delayDebounceFn)
 	}, [question]);
 
 	const onClickItem = (index) => {
-		console.log(index);
+		// console.log(index);
 		
 		setText(questions[index][0].trimRight());
 		
