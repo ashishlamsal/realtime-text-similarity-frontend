@@ -13,9 +13,13 @@ import { green } from '@mui/material/colors';
 import { Button, Input } from '@mui/material';
 import { useState } from 'react';
 
-export default function NavBar({ colorMode, theme, handleUploadClick }) {
+export default function NavBar({
+	colorMode,
+	theme,
+	handleUploadClick,
+	currentDatabase,
+}) {
 	const [uploading, setUploading] = useState(false);
-	const [currentDatabase, setCurrentDatabase] = useState('Quora');
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -77,9 +81,8 @@ export default function NavBar({ colorMode, theme, handleUploadClick }) {
 							type="file"
 							sx={{ display: 'none' }}
 							onChange={(e) => {
-								handleUploadClick(e, setUploading,setCurrentDatabase);
+								handleUploadClick(e, setUploading);
 								// setCurrentDatabase()
-								
 							}}
 						/>
 

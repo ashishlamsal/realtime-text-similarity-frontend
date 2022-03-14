@@ -33,6 +33,7 @@ function SubjectSelection({
 	setLoading,
 	setFailed,
 	handleToaster,
+	setCurrentDatabase,
 }) {
 	const algorithms = {
 		TFIDF_word2vec: 'WORD_2_VEC',
@@ -61,6 +62,7 @@ function SubjectSelection({
 			})
 			.then((data) => {
 				console.log(data);
+				setCurrentDatabase('Quora');
 			})
 			.catch((err) => {
 				console.log('error', err);
@@ -208,7 +210,13 @@ function SaveDialog({ onClose, newQuestionSet, open }) {
 	);
 }
 
-function TopBar({ questions, setQuestions, uploadCompleted, uploadFailed }) {
+function TopBar({
+	questions,
+	setQuestions,
+	uploadCompleted,
+	uploadFailed,
+	setCurrentDatabase,
+}) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedAlgo, setSelectedAlgo] = useState(
 		'Universal Sentence Encoder'
@@ -319,6 +327,7 @@ function TopBar({ questions, setQuestions, uploadCompleted, uploadFailed }) {
 					setLoading={setLoading}
 					setFailed={setFailed}
 					handleToaster={handleToaster}
+					setCurrentDatabase={setCurrentDatabase}
 				/>
 			</Grid>
 			<Grid item sx={{ display: 'flex', alignItems: 'center' }}>

@@ -54,7 +54,12 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(1)}
 					key={1}
-					style={{ background: red[300],margin:"15px 10px 15px 15px", borderRadius:"4px", cursor: 'pointer' }}
+					style={{
+						background: red[300],
+						margin: '15px 10px 15px 15px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
 				>
 					<Typography fontWeight="fontWeightBold" margin="1rem" align="center">
 						Delete
@@ -64,7 +69,12 @@ function DeleteDialog(props) {
 					button
 					onClick={() => handleListItemClick(0)}
 					key={0}
-					style={{ background: grey[500], margin:"15px 15px 15px 10px", borderRadius:"4px", cursor: 'pointer' }}
+					style={{
+						background: grey[500],
+						margin: '15px 15px 15px 10px',
+						borderRadius: '4px',
+						cursor: 'pointer',
+					}}
 				>
 					<Typography fontWeight="fontWeightBold" align="center" margin="1rem">
 						Cancel
@@ -129,7 +139,7 @@ const Editor = ({
 				>
 					<Grid item xs={10}>
 						<TextareaAutosize
-						style = {{lineHeight: "inherit"}}
+							style={{ lineHeight: 'inherit' }}
 							type="text"
 							onKeyDown={handleKeyDown}
 							onFocus={() => setInputFocused(true)}

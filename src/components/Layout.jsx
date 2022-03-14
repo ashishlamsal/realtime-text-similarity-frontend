@@ -19,6 +19,7 @@ function Layout({ context }) {
 	const [newBlockPos, setNewBlockPos] = useState(-1);
 	const [uploadSuccess, setUploadSuccess] = useState(false);
 	const [uploadFailed, setUploadFailed] = useState(false);
+	const [currentDatabase, setCurrentDatabase] = useState('Quora');
 
 	const changeQuestionAt = (index, newQuestion) => {
 		let copy = [...questions];
@@ -46,7 +47,7 @@ function Layout({ context }) {
 		setQuestions(new_);
 	};
 
-	const handleUploadClick = (e, setUploading, setCurrentDatabase) => {
+	const handleUploadClick = (e, setUploading) => {
 		e.preventDefault();
 		let file = e.target.files[0];
 		console.log(file);
@@ -81,6 +82,7 @@ function Layout({ context }) {
 				colorMode={colorMode}
 				theme={theme}
 				handleUploadClick={handleUploadClick}
+				currentDatabase={currentDatabase}
 			/>
 			<MuiContainer maxWidth="md">
 				<Paper
@@ -97,6 +99,7 @@ function Layout({ context }) {
 						setQuestions={setQuestions}
 						uploadCompleted={uploadSuccess}
 						uploadFailed={uploadFailed}
+						setCurrentDatabase={setCurrentDatabase}
 					/>
 
 					<List>
