@@ -1,41 +1,4 @@
 import { useEffect, useState } from 'react';
-// import Card from "./card"
-
-// const PredictionList =({question}) => {
-
-//     const [questions,setQuestions]=useState([
-//     ])
-//     useEffect(()=>{
-//         let postData={question:question}
-//         fetch("http://localhost:5000", {
-//             body: JSON.stringify(postData),
-//             headers: {
-//               "Content-Type": "application/json"
-//             },
-//             method: "POST"
-//           }).then(res => res.json()).then(sim=>{
-//               console.log(sim)
-//             //   console.log(sim)
-//             setQuestions(sim)
-//           }).catch(err=>{
-//               console.log("fetch error")
-//               console.log(err)
-//           })
-
-//     },[question])
-//     return (
-
-// <div>
-//     {question && question.length>10 && question.length<20 && <Card text={"Matching similarity..."}/>}
-//     {question && question.length>20 && Object.keys(questions).map((key,index)=>{
-//         // console.log(question,index);
-//         return <Card text={key} key={index}/>
-//     })}
-
-// </div>
-//     )
-// }
-// export default PredictionList;
 
 import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
@@ -48,8 +11,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
 
-export default function SimpleAccordion({ inputFocused, children, question }) {
+export default function SimpleAccordion({
+	textArea,
+	inputFocused,
+	children,
+	question,
+	setText,
+}) {
 	const [expand, setExpand] = React.useState(false);
 	const handleToggle = () => {
 		setExpand(!expand);
@@ -75,6 +45,26 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 				});
 			});
 	}, [question]);
+
+	const onClickItem = (index) => {
+		console.log(index);
+		
+		setText(questions[index][0].trimRight());
+		
+	};
+
+	const gradient = [
+		'#42b63c',
+		'#61b222',
+		'#7aac00',
+		'#90a600',
+		'#a49f00',
+		'#b69700',
+		'#c88e00',
+		'#d98300',
+		'#e87700',
+		'#f6690c',
+	];
 
 	return (
 		<div style={{ width: '100%' }}>
@@ -111,6 +101,8 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 									Similar Questions
 								</Typography>
 								{questions.map((key, index) => {
+									const ind = parseInt(Number(key[1]) * 10);
+									const color = gradient[gradient.length - ind];
 									return (
 										<ListItem key={index} disablePadding>
 											<ListItemButton sx={{ paddingBottom: '1px', mb: '0' }}>
@@ -123,14 +115,38 @@ export default function SimpleAccordion({ inputFocused, children, question }) {
 														{index + 1}
 													</Typography>
 												</ListItemIcon>
-												<ListItemText>
-													<Typography
-														sx={{ marginBottom: '0', lineHeight: 'inherit' }}
-														variant="subtitle2"
-														gutterBottom
+
+												<ListItemText
+													onClick={() => {
+														onClickItem(index);
+													}}
+												>
+													<Box
+														sx={{
+															display: 'flex',
+															justifyContent: 'space-between',
+														}}
 													>
-														{key}
-													</Typography>
+														<Typography
+															sx={{ marginBottom: '0', lineHeight: 'inherit' }}
+															variant="subtitle2"
+															gutterBottom
+														>
+															{key[0]}
+														</Typography>
+
+														<Typography
+															sx={{
+																marginBottom: '0',
+																lineHeight: 'inherit',
+																color: color,
+															}}
+															variant="subtitle2"
+															gutterBottom
+														>
+															{Number(key[1]).toFixed(3)}
+														</Typography>
+													</Box>
 												</ListItemText>
 											</ListItemButton>
 										</ListItem>

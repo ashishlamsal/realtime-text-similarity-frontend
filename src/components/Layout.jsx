@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 
 import { Container, Draggable } from 'react-smooth-dnd';
 import { arrayMoveImmutable } from 'array-move';
-
 import { List, ListItem } from '@mui/material';
 
 function Layout({ context }) {
@@ -50,7 +49,7 @@ function Layout({ context }) {
 	const handleUploadClick = (e, setUploading) => {
 		e.preventDefault();
 		let file = e.target.files[0];
-		console.log(file);
+		// console.log(file);
 
 		const formData = new FormData();
 
@@ -113,6 +112,7 @@ function Layout({ context }) {
 									<Draggable key={index}>
 										<ListItem>
 											<Editor
+											setText={(text) =>{changeQuestionAt(index, text)}}
 												text={item}
 												changeAt={changeQuestionAt}
 												index={index}

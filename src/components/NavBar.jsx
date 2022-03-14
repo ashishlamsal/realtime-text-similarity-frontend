@@ -69,7 +69,7 @@ export default function NavBar({
 								component="h3"
 								sx={{ lineHeight: 'normal', mr: 2 }}
 							>
-								Using {currentDatabase}
+								Using <b>{currentDatabase}</b> Dataset
 							</Typography>
 						</>
 					)}

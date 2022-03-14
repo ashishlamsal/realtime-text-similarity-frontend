@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './styles.scss';
-import PredictionList from './predictionList';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
@@ -93,6 +92,7 @@ const Editor = ({
 	setNewBlockPos,
 	newBlockPos,
 	deleteAt,
+	setText,
 }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 
@@ -129,7 +129,7 @@ const Editor = ({
 	};
 	return (
 		<div style={{ width: '100%' }}>
-			<SimpleAccordion inputFocused={inputFocused} question={text}>
+			<SimpleAccordion setText={setText} inputFocused={inputFocused} question={text}>
 				<Grid
 					container
 					sx={{
