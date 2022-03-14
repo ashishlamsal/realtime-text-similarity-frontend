@@ -46,7 +46,7 @@ function Layout({ context }) {
 		setQuestions(new_);
 	};
 
-	const handleUploadClick = (e, setUploading) => {
+	const handleUploadClick = (e, setUploading, setCurrentDatabase) => {
 		e.preventDefault();
 		let file = e.target.files[0];
 		console.log(file);
@@ -65,6 +65,7 @@ function Layout({ context }) {
 				setUploading(false);
 				setUploadSuccess(!uploadSuccess);
 				console.log(res);
+				setCurrentDatabase(e.target.files[0].name);
 			})
 			.catch((e) => {
 				console.log('error occured while uploading', e);

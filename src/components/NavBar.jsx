@@ -15,6 +15,7 @@ import { useState } from 'react';
 
 export default function NavBar({ colorMode, theme, handleUploadClick }) {
 	const [uploading, setUploading] = useState(false);
+	const [currentDatabase, setCurrentDatabase] = useState('Quora');
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -57,6 +58,17 @@ export default function NavBar({ colorMode, theme, handleUploadClick }) {
 							/>
 						</>
 					)}
+					{!uploading && (
+						<>
+							<Typography
+								variant="overline"
+								component="h3"
+								sx={{ lineHeight: 'normal', mr: 2 }}
+							>
+								Using {currentDatabase}
+							</Typography>
+						</>
+					)}
 					<label htmlFor="contained-button-file">
 						<Input
 							accept=".txt, text/plain"
@@ -65,7 +77,9 @@ export default function NavBar({ colorMode, theme, handleUploadClick }) {
 							type="file"
 							sx={{ display: 'none' }}
 							onChange={(e) => {
-								handleUploadClick(e, setUploading);
+								handleUploadClick(e, setUploading,setCurrentDatabase);
+								// setCurrentDatabase()
+								
 							}}
 						/>
 
