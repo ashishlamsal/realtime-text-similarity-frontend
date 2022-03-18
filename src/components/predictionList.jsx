@@ -56,9 +56,9 @@ export default function SimpleAccordion({
 
 	const onClickItem = (index) => {
 		// console.log(index);
-		
-		setText(questions[index][0].trimRight());
-		
+		if (index < questions.length) {
+			setText(questions[index][0].trimRight());
+		}
 	};
 
 	const gradient = [
