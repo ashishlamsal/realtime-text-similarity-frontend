@@ -49,6 +49,21 @@ function Layout({ context }) {
 		setQuestions(old);
 	};
 
+	const changeAndAdd = (index, newQuestion) => {
+		console.log('chage and add', index, newQuestion);
+		let copy = [...questions];
+		copy[index] = newQuestion;
+		if (questions.length > index + 1 && questions[index + 1] === '') {
+			setQuestions(copy);
+			setNewBlockPos(index + 1);
+			return;
+		}
+
+		copy.splice(index + 1, 0, '');
+		setQuestions(copy);
+		setNewBlockPos(index + 1);
+	};
+
 	const onDrop = ({ removedIndex, addedIndex }) => {
 		const new_ = arrayMoveImmutable(questions, removedIndex, addedIndex);
 		setQuestions(new_);
@@ -119,11 +134,15 @@ function Layout({ context }) {
 							{questions &&
 								questions.map((item, index) => {
 									// console.log('here ere', index, item);
+									// console.log(item);
 									return (
 										<Draggable key={index}>
 											<ListItem>
 												<Editor
 													text={item}
+													changeAndAdd={(text) => {
+														changeAndAdd(index, text);
+													}}
 													changeAt={changeQuestionAt}
 													index={index}
 													addAt={addQuestionAt}

@@ -23,6 +23,7 @@ export default function SimpleAccordion({
 	setNewBlockPos,
 	question_no,
 	changeAt,
+	changeAndAdd,
 }) {
 	const [expand, setExpand] = React.useState(false);
 	const handleToggle = () => {
@@ -64,9 +65,9 @@ export default function SimpleAccordion({
 
 	const onClickItem = (index) => {
 		if (index < questions.length) {
-			setText(questions[index][0].trimRight());
-			addAt(question_no + 1, '');
-			setNewBlockPos(question_no + 1);
+			changeAndAdd(questions[index][0].trimRight());
+
+			// }, 200);
 		}
 	};
 

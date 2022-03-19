@@ -85,6 +85,7 @@ function DeleteDialog(props) {
 }
 
 const Editor = ({
+	changeAndAdd,
 	text,
 	changeAt,
 	index,
@@ -127,16 +128,11 @@ const Editor = ({
 			setNewBlockPos(index + 1);
 		}
 	};
-	useEffect(() => {
-		setMytext(text);
-	}, [text]);
-	useEffect(() => {
-		changeAt(index, mytext);
-	}, [mytext]);
 
 	return (
 		<div style={{ width: '100%' }}>
 			<SimpleAccordion
+				changeAndAdd={changeAndAdd}
 				changeAt={changeAt}
 				addAt={addAt}
 				setNewBlockPos={setNewBlockPos}
@@ -160,11 +156,11 @@ const Editor = ({
 							onFocus={() => setInputFocused(true)}
 							onBlur={() => setInputFocused(false)}
 							onChange={(event) => {
-								// changeAt(index, event.target.value);
-								setMytext(event.target.value);
+								changeAt(index, event.target.value);
+								// setMytext(event.target.value);
 							}}
-							value={mytext}
-							id={mytext}
+							value={text}
+							id={text}
 							ref={ref}
 						/>
 					</Grid>
