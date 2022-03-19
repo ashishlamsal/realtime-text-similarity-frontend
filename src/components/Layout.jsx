@@ -27,6 +27,13 @@ function Layout({ context }) {
 	};
 
 	const addQuestionAt = (index, newQuestion) => {
+		if (
+			newQuestion === '' &&
+			questions.length > index &&
+			questions[index] === ''
+		) {
+			return;
+		}
 		let old = [...questions];
 		old.splice(index, 0, newQuestion);
 		setQuestions(old);
@@ -108,22 +115,25 @@ function Layout({ context }) {
 							onDrop={onDrop}
 						>
 							{questions &&
-								questions.map((item, index) => (
-									<Draggable key={index}>
-										<ListItem>
-											<Editor
-											setText={(text) =>{changeQuestionAt(index, text)}}
-												text={item}
-												changeAt={changeQuestionAt}
-												index={index}
-												addAt={addQuestionAt}
-												newBlockPos={newBlockPos}
-												setNewBlockPos={setNewBlockPos}
-												deleteAt={deleteAt}
-											/>
-										</ListItem>
-									</Draggable>
-								))}
+								questions.map((item, index) => {
+									console.log('here ere', index, item);
+									// console.log(item);
+									return (
+										<Draggable key={index}>
+											<ListItem>
+												<Editor
+													text={item}
+													changeAt={changeQuestionAt}
+													index={index}
+													addAt={addQuestionAt}
+													newBlockPos={newBlockPos}
+													setNewBlockPos={setNewBlockPos}
+													deleteAt={deleteAt}
+												/>
+											</ListItem>
+										</Draggable>
+									);
+								})}
 						</Container>
 					</List>
 				</Paper>

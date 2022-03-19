@@ -19,45 +19,54 @@ export default function SimpleAccordion({
 	children,
 	question,
 	setText,
+	addAt,
+	setNewBlockPos,
+	question_no,
+	changeAt,
 }) {
 	const [expand, setExpand] = React.useState(false);
 	const handleToggle = () => {
 		setExpand(!expand);
 	};
+	const [focusedInput, setFocusedInput] = useState(false);
 	const [questions, setQuestions] = useState([]);
 	const timer = setTimeout(() => {}, 0.5);
 	useEffect(() => {
-
 		const delayDebounceFn = setTimeout(() => {
-
-		let postData = { question: question };
-		fetch('http://localhost:5000', {
-			body: JSON.stringify(postData),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-		})
-			.then((res) => res.json())
-			.then((sim) => {
-				console.log("req");
-				setQuestions(sim);
+			let postData = { question: question };
+			fetch('http://localhost:5000', {
+				body: JSON.stringify(postData),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
 			})
-			.catch((err) => {
-				setQuestions({
-					'Some error occured while making request to backend': 0,
+				.then((res) => res.json())
+				.then((sim) => {
+					console.log('req');
+					setQuestions(sim);
+				})
+				.catch((err) => {
+					setQuestions({
+						'Some error occured while making request to backend': 0,
+					});
 				});
-			});
-		
-		}, 200)
+		}, 200);
 
-		return () => clearTimeout(delayDebounceFn)
+		return () => clearTimeout(delayDebounceFn);
 	}, [question]);
 
+	useEffect(() => {
+		setTimeout(() => {
+			setFocusedInput(inputFocused);
+		}, 100);
+	}, [inputFocused]);
+
 	const onClickItem = (index) => {
-		// console.log(index);
 		if (index < questions.length) {
 			setText(questions[index][0].trimRight());
+			addAt(question_no + 1, '');
+			setNewBlockPos(question_no + 1);
 		}
 	};
 
@@ -76,7 +85,7 @@ export default function SimpleAccordion({
 
 	return (
 		<div style={{ width: '100%' }}>
-			<Accordion expanded={inputFocused || expand} disableGutters>
+			<Accordion expanded={focusedInput || expand} disableGutters>
 				{/* {propes.children} */}
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon onClick={handleToggle} />}
@@ -113,7 +122,12 @@ export default function SimpleAccordion({
 									const color = gradient[gradient.length - ind];
 									return (
 										<ListItem key={index} disablePadding>
-											<ListItemButton sx={{ paddingBottom: '1px', mb: '0' }}>
+											<ListItemButton
+												onClick={() => {
+													onClickItem(index);
+												}}
+												sx={{ paddingBottom: '1px', mb: '0' }}
+											>
 												<ListItemIcon>
 													<Typography
 														sx={{ marginBottom: '0', lineHeight: 'inherit' }}
@@ -124,11 +138,7 @@ export default function SimpleAccordion({
 													</Typography>
 												</ListItemIcon>
 
-												<ListItemText
-													onClick={() => {
-														onClickItem(index);
-													}}
-												>
+												<ListItemText>
 													<Box
 														sx={{
 															display: 'flex',

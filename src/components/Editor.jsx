@@ -92,11 +92,11 @@ const Editor = ({
 	setNewBlockPos,
 	newBlockPos,
 	deleteAt,
-	setText,
 }) => {
 	const [inputFocused, setInputFocused] = useState(false);
 
 	const [open, setOpen] = React.useState(false);
+	const [mytext, setMytext] = useState(text);
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -127,9 +127,21 @@ const Editor = ({
 			setNewBlockPos(index + 1);
 		}
 	};
+	useEffect(() => {
+		changeAt(index, mytext);
+	}, [mytext]);
+
 	return (
 		<div style={{ width: '100%' }}>
-			<SimpleAccordion setText={setText} inputFocused={inputFocused} question={text}>
+			<SimpleAccordion
+				changeAt={changeAt}
+				addAt={addAt}
+				setNewBlockPos={setNewBlockPos}
+				setText={setMytext}
+				inputFocused={inputFocused}
+				question={text}
+				question_no={index}
+			>
 				<Grid
 					container
 					sx={{
@@ -145,10 +157,11 @@ const Editor = ({
 							onFocus={() => setInputFocused(true)}
 							onBlur={() => setInputFocused(false)}
 							onChange={(event) => {
-								changeAt(index, event.target.value);
+								// changeAt(index, event.target.value);
+								setMytext(event.target.value);
 							}}
-							value={text}
-							id={text}
+							value={mytext}
+							id={mytext}
 							ref={ref}
 						/>
 					</Grid>
