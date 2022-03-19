@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-
 import * as React from 'react';
+
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -30,7 +30,7 @@ export default function SimpleAccordion({
 	};
 	const [focusedInput, setFocusedInput] = useState(false);
 	const [questions, setQuestions] = useState([]);
-	const timer = setTimeout(() => {}, 0.5);
+	// const timer = setTimeout(() => {}, 0.5);
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
 			let postData = { question: question };
@@ -43,7 +43,7 @@ export default function SimpleAccordion({
 			})
 				.then((res) => res.json())
 				.then((sim) => {
-					console.log('req');
+					// console.log('req');
 					setQuestions(sim);
 				})
 				.catch((err) => {

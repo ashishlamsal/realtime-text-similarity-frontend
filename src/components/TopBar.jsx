@@ -1,29 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react';
-import SaveIcon from '@mui/icons-material/Save';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import Grid from '@mui/material/Grid';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import IconButton from '@mui/material/IconButton';
+import React, { useEffect, useState } from 'react';
 
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-
 import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
-import { red, grey } from '@mui/material/colors';
-import CheckIcon from '@mui/icons-material/Check';
+import Tooltip from '@mui/material/Tooltip';
+import { red, grey, green } from '@mui/material/colors';
 
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import SaveIcon from '@mui/icons-material/Save';
+import CheckIcon from '@mui/icons-material/Check';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-import Stack from '@mui/material/Stack';
-
-import Notification from './snackbar';
-
-import latex_template from '../template_latex.js';
+import Notification from './SnackBar';
+import latexTemplate from '../templates/latexTemplate.js';
 
 function SubjectSelection({
 	setSelectedAlgo,
@@ -61,7 +58,7 @@ function SubjectSelection({
 				response.json();
 			})
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setCurrentDatabase('Quora');
 			})
 			.catch((err) => {
@@ -249,8 +246,8 @@ function TopBar({
 			console.log(`${key}: ${questions[key]}`);
 			quesstring += '\n \\item ' + questions[key];
 		}
-		const final = latex_template.replace('%%questions', quesstring);
-		console.log(latex_template);
+		const final = latexTemplate.replace('%%questions', quesstring);
+		console.log(latexTemplate);
 		console.log(quesstring);
 		console.log(final);
 
@@ -288,27 +285,32 @@ function TopBar({
 			}}
 		>
 			<Grid item>
-				<IconButton
-					onClick={() => {
-						setOpenNewDialog(true);
-					}}
-					color="inherit"
-				>
-					<InsertDriveFileIcon />
-				</IconButton>
+				<Tooltip title="New Document">
+					<IconButton
+						onClick={() => {
+							setOpenNewDialog(true);
+						}}
+						color="inherit"
+					>
+						<InsertDriveFileIcon />
+					</IconButton>
+				</Tooltip>
 				<NewDialog
 					newQuestionSet={newQuestionSet}
 					open={openNewDialog}
 					onClose={() => setOpenNewDialog(false)}
 				/>
-				<IconButton
-					onClick={() => {
-						setOpenSaveDialog(true);
-					}}
-					color="inherit"
-				>
-					<SaveIcon />
-				</IconButton>
+
+				<Tooltip title="Save Document">
+					<IconButton
+						onClick={() => {
+							setOpenSaveDialog(true);
+						}}
+						color="inherit"
+					>
+						<SaveIcon />
+					</IconButton>
+				</Tooltip>
 				<SaveDialog
 					newQuestionSet={saveQuestions}
 					open={openSaveDialog}
@@ -316,9 +318,11 @@ function TopBar({
 				/>
 			</Grid>
 			<Grid item>
-				<IconButton onClick={() => setDialogOpen(true)} color="inherit">
-					<LibraryBooksIcon />
-				</IconButton>
+				<Tooltip title="Select Algorithm">
+					<IconButton onClick={() => setDialogOpen(true)} color="inherit">
+						<LibraryBooksIcon />
+					</IconButton>
+				</Tooltip>
 				<SubjectSelection
 					dialogOpen={dialogOpen}
 					setDialogOpen={setDialogOpen}

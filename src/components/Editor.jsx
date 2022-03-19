@@ -1,19 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
-import './styles.scss';
 import TextareaAutosize from 'react-textarea-autosize';
+
 import { Grid, ListItemIcon } from '@mui/material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
-import SimpleAccordion from './predictionList';
-
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Typography from '@mui/material/Typography';
-
-import { red, grey } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import { red, grey } from '@mui/material/colors';
+
+import SimpleAccordion from './PredictionList';
 
 function DeleteDialog(props) {
 	const { onClose, selectedValue, deleteAt, open } = props;
@@ -109,7 +109,7 @@ const Editor = ({
 	const ref = useRef();
 
 	useEffect(() => {
-		if (newBlockPos == index) {
+		if (newBlockPos === index) {
 			ref.current.focus();
 		}
 		setNewBlockPos(-1);
@@ -169,15 +169,19 @@ const Editor = ({
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<ListItemIcon className="drag-handle">
-							<DragHandleIcon onClick={() => setOpen(false)} />
-						</ListItemIcon>
+						<Tooltip title="Drag">
+							<ListItemIcon className="drag-handle">
+								<DragHandleIcon onClick={() => setOpen(false)} />
+							</ListItemIcon>
+						</Tooltip>
 					</Grid>
 					<Grid item xs={1}>
-						<ListItemIcon>
-							{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
-							<DeleteRounded onClick={handleClickOpen} />
-						</ListItemIcon>
+						<Tooltip title="Delete">
+							<ListItemIcon>
+								{/* <DeleteRounded onClick={() => deleteAt(index)} /> */}
+								<DeleteRounded onClick={handleClickOpen} />
+							</ListItemIcon>
+						</Tooltip>
 					</Grid>
 					<DeleteDialog
 						selectedValue={index}

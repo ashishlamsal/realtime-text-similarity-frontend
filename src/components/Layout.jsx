@@ -1,15 +1,16 @@
+import React, { useState } from 'react';
+import { arrayMoveImmutable } from 'array-move';
+import { Container, Draggable } from 'react-smooth-dnd';
+
 import { Container as MuiContainer } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import React, { useState } from 'react';
-import Editor from './Editor';
-import TopBar from './TopBar';
-import NavBar from './NavBar';
 import { useTheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-
-import { Container, Draggable } from 'react-smooth-dnd';
-import { arrayMoveImmutable } from 'array-move';
 import { List, ListItem } from '@mui/material';
+
+import Editor from './Editor';
+import NavBar from './NavBar';
+import TopBar from './TopBar';
 
 function Layout({ context }) {
 	const theme = useTheme();
@@ -73,10 +74,10 @@ function Layout({ context }) {
 				setUploadSuccess(!uploadSuccess);
 				console.log(res);
 				setCurrentDatabase(e.target.files[0].name);
-				e.target.value=null
+				e.target.value = null;
 			})
 			.catch((e) => {
-				console.log('error occured while uploading', e);
+				console.log('Error occured while uploading', e);
 				setUploadFailed(!uploadFailed);
 				setUploading(false);
 			});
@@ -117,8 +118,7 @@ function Layout({ context }) {
 						>
 							{questions &&
 								questions.map((item, index) => {
-									console.log('here ere', index, item);
-									// console.log(item);
+									// console.log('here ere', index, item);
 									return (
 										<Draggable key={index}>
 											<ListItem>

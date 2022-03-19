@@ -1,4 +1,4 @@
-const latex_template = `\\documentclass[a4paper,14pt]{report}
+const latexTemplate = `\\documentclass[a4paper,14pt]{report}
 \\usepackage[a4paper, margin=1in]{geometry}
 
 \\begin{document}
@@ -10,4 +10,4 @@ const latex_template = `\\documentclass[a4paper,14pt]{report}
 
 \\end{document}`;
 
-export default latex_template;
+export default latexTemplate;
