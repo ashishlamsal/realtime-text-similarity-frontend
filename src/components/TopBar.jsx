@@ -21,6 +21,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import Notification from './SnackBar';
 import latexTemplate from '../templates/latexTemplate.js';
+import { jsPDF } from 'jspdf';
 
 function SubjectSelection({
 	setSelectedAlgo,
@@ -33,7 +34,7 @@ function SubjectSelection({
 	setCurrentDatabase,
 }) {
 	const algorithms = {
-		TFIDF_word2vec: 'WORD_2_VEC',
+		TFIDF_word2vec: 'tf-idf and Word2Vec',
 		BERT: 'BERT',
 		'Smooth inverse frequency': 'ARORA',
 		'Universal Sentence Encoder': 'USE',
@@ -240,16 +241,57 @@ function TopBar({
 	}, [uploadFailed]);
 
 	const saveQuestions = () => {
-		console.log(questions);
+		// export pdf and latex
+
+		const doc = new jsPDF({
+			orientation: 'p',
+			unit: 'pt',
+			format: 'a4',
+		});
+		var lMargin = 50; //left margin in mm
+		var rMargin = 50; //right margin in mm
+		var bMargin = 120; //bottom margin in mm
+		var pdfInMM = 570; // width of A4 in mm
+		var yPos = 80; // y position of the line
+		var pageHeight = doc.internal.pageSize.height - bMargin; // height of the page in mm
+		var questionNumber = 1;
+
+		doc.setFont('helvetica', 'bold');
+		doc.setFontSize(20);
+		doc.text('Questions', lMargin, 60);
+
+		doc.setFont('helvetica', 'normal');
+		doc.setFontSize(12);
+
+		// console.log(questions);
 		let quesstring = '';
 		for (const key in questions) {
-			console.log(`${key}: ${questions[key]}`);
-			quesstring += '\n \\item ' + questions[key];
+			// console.log(`${key}: ${questions[key]}`);
+			if (questions[key] !== '') {
+				var lines = doc.splitTextToSize(
+					questions[key],
+					pdfInMM - lMargin - rMargin
+				);
+				doc.text(`${questionNumber}. `, lMargin, yPos + 20);
+				questionNumber += 1;
+				for (var i = 0; i < lines.length; i++) {
+					yPos += 20;
+					doc.text(lines[i], lMargin + 20, yPos);
+				}
+				if (yPos > pageHeight) {
+					yPos = 80;
+					doc.addPage();
+				}
+
+				quesstring += '\n \\item ' + questions[key];
+			}
 		}
+		doc.save('questions.pdf');
+
 		const final = latexTemplate.replace('%%questions', quesstring);
-		console.log(latexTemplate);
-		console.log(quesstring);
-		console.log(final);
+		// console.log('latex', latexTemplate);
+		// console.log('ques', quesstring);
+		// console.log('final', final);
 
 		var a = document.createElement('a');
 		var file = new Blob([final], { type: 'text/plain' });

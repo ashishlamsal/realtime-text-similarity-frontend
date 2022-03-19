@@ -68,7 +68,7 @@ export default function NavBar({
 								component="h3"
 								sx={{ lineHeight: 'normal', mr: 2 }}
 							>
-								Using <b>{currentDatabase}</b> Dataset
+								Using <b>{currentDatabase}</b> Database
 							</Typography>
 						</>
 					)}
@@ -92,7 +92,7 @@ export default function NavBar({
 								sx={{ mr: 1 }}
 								startIcon={<UploadIcon />}
 							>
-								Dataset
+								Database
 							</Button>
 						</Tooltip>
 					</label>
