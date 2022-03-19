@@ -96,7 +96,7 @@ const Editor = ({
 	const [inputFocused, setInputFocused] = useState(false);
 
 	const [open, setOpen] = React.useState(false);
-	const [mytext, setMytext] = useState(text);
+	const [mytext, setMytext] = useState('');
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -127,6 +127,9 @@ const Editor = ({
 			setNewBlockPos(index + 1);
 		}
 	};
+	useEffect(() => {
+		setMytext(text);
+	}, [text]);
 	useEffect(() => {
 		changeAt(index, mytext);
 	}, [mytext]);
