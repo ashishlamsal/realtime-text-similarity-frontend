@@ -73,6 +73,7 @@ function Layout({ context }) {
 				setUploadSuccess(!uploadSuccess);
 				console.log(res);
 				setCurrentDatabase(e.target.files[0].name);
+				e.target.value=null
 			})
 			.catch((e) => {
 				console.log('error occured while uploading', e);
